@@ -12,4 +12,11 @@ describe('User model', () => {
       email: 'test@test.com' 
     });
   });
+
+  it('has a required email', () => {
+    const user = new User({});
+
+    const errors = user.validateSync().errors;
+    expect(errors.email.message).toBe('Path `email` is required.');
+  });
 });
