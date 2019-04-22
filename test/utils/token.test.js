@@ -19,4 +19,19 @@ describe('jwt', () => {
       _id: 23455, email: 'megan@megan.com' 
     });
   });
+
+  it('can verify a token with expiration', () => {
+    const newToken = token({ _id: 23455, email: 'megan@megan.com' });
+
+    const obj = untokenize(newToken);
+
+    expect(obj).toEqual({ 
+      exp: expect.any(Number), 
+      iat: expect.any(Number), 
+      payload: { 
+        _id: 23455, 
+        email: 'megan@megan.com' 
+      } 
+    });
+  });
 });
