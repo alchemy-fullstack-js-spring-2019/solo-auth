@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const { createHash } = require('../../lib/utils/hash');
 const { hashTrue } = require('../../lib/utils/hash');
 const { createSaltHash } = require('../../lib/utils/hash');
@@ -18,6 +19,17 @@ describe('hash test', () => {
       });
   });
 
+  it('can compare passwords', () => {
+    const pw = 'dfggfsj';
+    return createHash(pw)
+      .then(created => {
+        return bcrypt.compare(pw, created);
+      })
+      .then(compareResult => {
+        expect(compareResult).toBeTruthy();
+      });
+  });
+
   it('returns true if password matches hash, otherwise false', () => {
     const pw = 'abc123';
     const hash = '$2a$10$tVFy.5q2G62e8wmQyEpg5.7ohTVgc1nd8KQifF3BEiDP8o5F6fq/W';
@@ -30,6 +42,7 @@ describe('hash test', () => {
     return createHash(pw)
       .then(hashedPw => {
         expect(hashedPw).not.toEqual(pw);
+        expect(hashedPw).toEqual(expect.any(String));
       });
   });
 
@@ -38,8 +51,9 @@ describe('hash test', () => {
     return Promise.all([
       Promise.resolve(createSaltHash(pw))
     ])
-      .then(saltHashedPw => {
+      .then(([saltHashedPw]) => {
         expect(saltHashedPw).not.toEqual(pw);
+        expect(saltHashedPw).toEqual(expect.any(String));
       });
   });
 });
