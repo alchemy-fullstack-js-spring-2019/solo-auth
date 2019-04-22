@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const tokenize = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 describe('json web token tests', () => {
 
@@ -29,7 +29,18 @@ describe('tokenize function tests', () => {
     const result = tokenize(payload);
     const expected = jwt.sign(payload, process.env.AUTH_SECRET, { expiresIn: '24h' });
     expect(result).toEqual(expected);
+  });
 
+  it('gets the payload from a token', () => {
+    const payload = { 
+      payload: {
+        name: 'Ryan Gosling',
+        location: 'Los Angeles'
+      }
+    };
+    const token = tokenize(payload);
+    const result = untokenize(token);
+    expect(result).toEqual(payload.payload);
   });
 
 });
