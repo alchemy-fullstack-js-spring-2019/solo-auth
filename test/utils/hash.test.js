@@ -1,5 +1,6 @@
 const { createHash } = require('../../lib/utils/hash');
 const { hashTrue } = require('../../lib/utils/hash');
+const { createSaltHash } = require('../../lib/utils/hash');
 
 
 describe('hash test', () => {
@@ -29,6 +30,16 @@ describe('hash test', () => {
     return createHash(pw)
       .then(hashedPw => {
         expect(hashedPw).not.toEqual(pw);
+      });
+  });
+
+  it('can generate a random salt and add to hash', () => {
+    const pw = 'passwordsarecool';
+    return Promise.all([
+      Promise.resolve(createSaltHash(pw))
+    ])
+      .then(saltHashedPw => {
+        expect(saltHashedPw).not.toEqual(pw);
       });
   });
 });
