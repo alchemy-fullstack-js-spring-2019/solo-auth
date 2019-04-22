@@ -9,7 +9,9 @@ describe('bcrypt', () => {
         hash(password)
       ]))
       .then(([hash1, hash2]) => {
+        expect(hash1).toBeDefined();
         expect(hash2).toEqual(hash1);
+        expect(hash1).not.toEqual(password);
       });
   });
 });
