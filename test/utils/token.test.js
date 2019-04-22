@@ -52,6 +52,7 @@ describe('jwt functions', () => {
   });
 
   it('can verify a token', () => {
-   console.log(untokenize(tokened));
+    const untokened = untokenize(tokened);
+    expect(untokened).toEqual({ hi: 'there' });
   });
 });
