@@ -1,5 +1,5 @@
+require('dotenv').config();
 const { hash, compare } = require('../lib/utils/hash');
-const bcrypt = require('bcryptjs');
 
 describe('hash test', () => {
   it('takes a string and returns a promise that resolves with a hashed password', () => {
