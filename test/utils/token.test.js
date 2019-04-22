@@ -1,14 +1,16 @@
-const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const { token } = require('../../lib/utils/token');
 
 describe('jwt', () => {
   it('can create a token', () => {
     const payload = { _id: 23455, email: 'megan@megan.com' };
-    const secret = 's3cret';
     const options = { expiresIn: '2h' };
 
-    const result = token(payload, secret, options);
+    const result = token(payload, options);
     
     expect(result).toEqual(expect.any(String));
   });
+  // it('can verify a token', () => {
+  //   const body = token()
+  // })
 });
