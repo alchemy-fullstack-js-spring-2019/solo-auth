@@ -1,0 +1,32 @@
+{
+  "name": "solo-auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest --verbose",
+    "test:watch": "npm run test -- --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/intromode/solo-auth.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/intromode/solo-auth/issues"
+  },
+  "homepage": "https://github.com/intromode/solo-auth#readme",
+  "devDependencies": {
+    "jest": "^24.7.1"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "md5": "^2.2.1"
+  }
+}
