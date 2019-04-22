@@ -11,15 +11,15 @@ describe('jwt token', () => {
     expect(token).toEqual(expect.any(String));
   });
 
-  it('can verify a token', () => {
+  it('can untokenize a token', () => {
     const token = tokenize({
       _id: '1234',
       email: 'leslie@gmail.com'
     });
 
-    const obj = untokenize(token, process.env.AUTH_SECRET);
+    const obj = untokenize(token);
 
-    expect(obj.payload).toEqual({
+    expect(obj).toEqual({
       _id: '1234',
       email: 'leslie@gmail.com'
     });
