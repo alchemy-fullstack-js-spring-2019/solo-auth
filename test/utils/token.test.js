@@ -22,4 +22,12 @@ describe('tokens', () => {
       species: 'dumb chicken'
     });
   });
+
+  it('canv erify token with expiration of one day (86400 seconds', () => {
+    const token = tokenize({
+      name: 'Noodle',
+      species: 'dumb chicken'
+    });
+    expect(untokenize(token).exp - untokenize(token).iat).toEqual(86400);
+  });
 });
