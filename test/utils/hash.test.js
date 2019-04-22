@@ -16,17 +16,27 @@ describe('HASH', () => {
       });
   });
 
-
-  // FIX
   it('compares passwords', () => {
     const password = 'password';
-    const newPassword = 'flyingfox';
-
-    return compare(password, newPassword)
-      .then(passwords => {
-        console.log(passwords);
-        expect(passwords).toBeFalsy();
+    
+    return bcrypt(password)
+      .then(hashPw => {
+        return compare ('password', hashPw);
+      })
+      .then(compareResult => {
+        expect(compareResult).toBeTruthy();
       });
   });
 
+  it('compares passwords', () => {
+    const password = 'password';
+    
+    return bcrypt(password)
+      .then(hashPw => {
+        return compare ('smurf', hashPw);
+      })
+      .then(compareResult => {
+        expect(compareResult).toBeFalsy();
+      });
+  });
 });
