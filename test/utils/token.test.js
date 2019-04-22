@@ -17,10 +17,6 @@ describe('token tests', () => {
     const token = tokenize(input);
     const output = untokenize(token, process.env.AUTH_SECRET);
     
-    expect(output).toEqual({
-      ...input,
-      exp: expect.any(Number),
-      iat: expect.any(Number)
-    });
+    expect(output).toEqual(input);
   });
 });
