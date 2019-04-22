@@ -7,10 +7,14 @@ describe('token tests', () => {
     expect(createToken(payload)).toEqual(expect.any(String));
   });
   
-  it('can verify a token with expiration', () => {
+  it('can untokenize a token', () => {
     const token = createToken(payload);
     const body = verifyToken(token);
-    expect(body).toEqual({ payload, iat: expect.any(Number), exp: expect.any(Number) });
+    expect(body).toEqual(payload);
+  });
+  
+  it('can untokenize a bogus token', () => {
+    expect(() => verifyToken('1234')).toThrow('Bogus');
   });
 
 });
