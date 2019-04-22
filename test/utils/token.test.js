@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const { tokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 describe('JWT TOKEN', () => {
 
@@ -14,12 +14,40 @@ describe('JWT TOKEN', () => {
     expect(token).toEqual(expect.any(String));
   });
   
-  it.only('tokenize function', () => {
+  it('tokenize function', () => {
     const token = tokenize({
       _id: '123',
       email: 'fake@email.com'
     });
     expect(token).toEqual(expect.any(String));
+  });
+
+  it('jwt verify', () => {
+    const token = tokenize({
+      name: 'spot',
+      age: 12
+    });
+
+    const obj = jwt.verify(token, process.env.AUTH_SECRET);
+
+    expect(obj.payload).toEqual({
+      name: 'spot',
+      age: 12
+    });
+  });
+  
+  it('untokenize function', () => {
+    const token = tokenize({
+      name: 'spot',
+      age: 12
+    });
+
+    const payload = untokenize(token);
+
+    expect(payload).toEqual({
+      name: 'spot',
+      age: 12
+    });
   });
 
 
