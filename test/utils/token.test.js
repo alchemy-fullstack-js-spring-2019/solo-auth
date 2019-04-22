@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const { tokenize } = require('../../lib/utils/token');
-const { untokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 // example token = jwt.sign({ foo: 'bar' }, 'shhhhh');
 
 describe('jwt tests', () => {
@@ -18,7 +17,7 @@ describe('jwt tests', () => {
     expect(token).toEqual(expect.any(String));
   });
 
-  it('can verify a token', () => {
+  it('can untokenize a token', () => {
     const token = tokenize({ animal: 'elephants' });
     const body = untokenize(token);
     expect(body).toEqual({ animal: 'elephants' });

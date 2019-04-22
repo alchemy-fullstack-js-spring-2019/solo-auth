@@ -46,14 +46,17 @@ describe('hash test', () => {
       });
   });
 
-  it('can generate a random salt and add to hash', () => {
+  it('can turn a password into a hash ASYNC', async() => {
+    const pw = 'password123';
+    const hashedPw = await createHash(pw);
+    expect(hashedPw).not.toEqual(pw);
+    expect(hashedPw).toEqual(expect.any(String));
+  });
+
+  it('can generate a random salt and add to hash', async() => {
     const pw = 'passwordsarecool';
-    return Promise.all([
-      Promise.resolve(createSaltHash(pw))
-    ])
-      .then(([saltHashedPw]) => {
-        expect(saltHashedPw).not.toEqual(pw);
-        expect(saltHashedPw).toEqual(expect.any(String));
-      });
+    const saltHashedPw = await createSaltHash(pw);
+    expect(saltHashedPw).not.toEqual(pw);
+    expect(saltHashedPw).toEqual(expect.any(String));
   });
 });
