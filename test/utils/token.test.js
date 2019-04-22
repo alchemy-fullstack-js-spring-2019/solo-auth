@@ -23,7 +23,7 @@ describe('tokens', () => {
     });
   });
 
-  it('canv erify token with expiration of one day (86400 seconds', () => {
+  it('can verify token with expiration of one day (86400 seconds', () => {
     const token = tokenize({
       name: 'Noodle',
       species: 'dumb chicken'
