@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { tokenize } = require('../../lib/utils/token');
+const jwt = require('jsonwebtoken');
 
 describe('jwt token', () => {
   it('can create a token', () => {
