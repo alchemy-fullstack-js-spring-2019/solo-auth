@@ -19,4 +19,14 @@ describe('testing hash and compare functions', () => {
         expect(compareBool).toBeTruthy();
       });
   });
+  it('takes a string and compares hashed value to plain text FAIL', () => {
+    const password = 'supersecretPW';
+    return hash(password)
+      .then(hashedPW => {
+        return compare('false', hashedPW);
+      })
+      .then(compareBool => {
+        expect(compareBool).toBeFalsy();
+      });
+  });
 });
