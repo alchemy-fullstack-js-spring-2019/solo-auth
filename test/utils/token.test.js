@@ -12,7 +12,7 @@ describe('token', () => {
     expect(token).toEqual(expect.any(String));
   });
 
-  it('verifies a token', () => {
+  it('untokenizes and reads a token', () => {
     const token = tokenize({
       name: 'Steve',
       age: 1
