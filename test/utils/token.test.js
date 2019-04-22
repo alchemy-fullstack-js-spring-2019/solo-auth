@@ -19,4 +19,8 @@ describe('token tests', () => {
     
     expect(output).toEqual(input);
   });
+
+  it('throws bogus token', () => {
+    expect(() => untokenize('1234', process.env.AUTH_SECRET)).toThrow('Bogus Token');
+  });
 });
