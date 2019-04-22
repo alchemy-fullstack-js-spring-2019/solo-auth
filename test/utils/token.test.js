@@ -1,16 +1,22 @@
 require('dotenv').config();
-const { token } = require('../../lib/utils/token');
+const { token, untokenize } = require('../../lib/utils/token');
 
 describe('jwt', () => {
   it('can create a token', () => {
     const payload = { _id: 23455, email: 'megan@megan.com' };
-    const options = { expiresIn: '2h' };
-
-    const result = token(payload, options);
+    const result = token(payload);
     
     expect(result).toEqual(expect.any(String));
   });
-  // it('can verify a token', () => {
-  //   const body = token()
-  // })
+
+  it('can verify a token', () => {
+    const payload = { _id: 23455, email: 'megan@megan.com' };
+    const body = token(payload);
+
+    const obj = untokenize(body);
+
+    expect(obj.payload).toEqual({
+      _id: 23455, email: 'megan@megan.com' 
+    });
+  });
 });
