@@ -1,17 +1,27 @@
-const hash = require('../../lib/utils/hash');
+const { hash, compare } = require('../../lib/utils/hash');
 
 describe('bcrypt', () => {
   it('returns a promise with a hashed password', () => {
     const password = 'Passw0rd';
     return hash(password)
-      .then(hashedPassword => Promise.all([
-        Promise.resolve(hashedPassword),
-        hash(password)
-      ]))
-      .then(([hash1, hash2]) => {
-        expect(hash1).toBeDefined();
-        expect(hash2).toEqual(hash1);
-        expect(hash1).not.toEqual(password);
+      .then(hashedPassword => {
+        expect(hashedPassword).toBeDefined();
+        expect(hashedPassword).toEqual(expect.any(String));
+        expect(hashedPassword).not.toEqual(password);
       });
+  });
+
+  it('compareshashed password with password and returns true', () => {
+    const password = 'Passw0rd';
+    return hash(password)
+      .then(hashedPassword => compare(password, hashedPassword))
+      .then(result => expect(result).toBeTruthy());
+  });
+
+  it('compares hashed password with wrong password and returns false', () => {
+    const password = 'Passw0rd';
+    return hash(password)
+      .then(hashedPassword => compare('Passw0rd ', hashedPassword))
+      .then(result => expect(result).toBeFalsy());
   });
 });
