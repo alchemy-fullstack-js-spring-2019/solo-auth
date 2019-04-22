@@ -17,17 +17,9 @@ describe('tokens', () => {
       name: 'Noodle',
       species: 'dumb chicken'
     });
-    expect(untokenize(token).payload).toEqual({
+    expect(untokenize(token)).toEqual({
       name: 'Noodle',
       species: 'dumb chicken'
     });
-  });
-
-  it('can verify token with expiration of one day (86400 seconds', () => {
-    const token = tokenize({
-      name: 'Noodle',
-      species: 'dumb chicken'
-    });
-    expect(untokenize(token).exp - untokenize(token).iat).toEqual(86400);
   });
 });
