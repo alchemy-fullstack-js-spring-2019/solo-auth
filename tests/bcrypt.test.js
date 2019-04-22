@@ -38,16 +38,18 @@ describe('bcrypt', () => {
         return hash(password)
             .then(hashed => {
                 expect(hashed).toEqual(expect.any(String));
+                expect(hashed).not.toEqual(password);
             });
     });
 
     it('has a compare function that returns true if password and hash match', () => {
         const password = 'password';
-        const sampleHash = hash(password);
-
-        return compare(password, sampleHash)
+        return hash(password)
+            .then(hashed => {
+                return compare(password, hashed);
+            })
             .then(result => {
-                expect(result).toBe(false);
+                expect(result).toBeTruthy();
             });
     });
 });
