@@ -9,4 +9,15 @@ describe('hash function', () => {
         expect(hashedPassword).not.toEqual('password');
       });
   });
+  it('can compare passwords', () => {
+    const password = 'password';
+
+    return hash(password)
+      .then(hashedPassword => {
+        return bcrypt.compare('password', hashedPassword);
+      })
+      .then(compareResult => {
+        expect(compareResult).toBeTruthy();
+      });
+  });
 });
