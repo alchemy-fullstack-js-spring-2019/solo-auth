@@ -22,4 +22,8 @@ describe('tokens', () => {
       species: 'dumb chicken'
     });
   });
+
+  it('return err for a bad token', () => {
+    expect(() => untokenize('12345')).toThrow('Bogus Token');
+  });
 });
