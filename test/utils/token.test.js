@@ -32,15 +32,19 @@ describe('tokenize function tests', () => {
   });
 
   it('gets the payload from a token', () => {
-    const payload = { 
+    const object = { 
       payload: {
         name: 'Ryan Gosling',
         location: 'Los Angeles'
       }
     };
-    const token = tokenize(payload);
+    const token = tokenize(object);
     const result = untokenize(token);
-    expect(result).toEqual(payload.payload);
+    expect(result).toEqual(object.payload);
+  });
+
+  it('untokenizes a bogus token', () => {
+    expect(() => untokenize('123')).toThrowError('Bogus Token');
   });
 
 });
