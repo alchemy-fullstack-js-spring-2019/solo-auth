@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { tokenize } = require('../lib/utils/token');
+const { tokenize, untokenize } = require('../lib/utils/token');
 
 describe('token test', () => {
   it('creates a token', () => {
@@ -8,5 +8,17 @@ describe('token test', () => {
       email: 'chickenfingers@yum.com'
     };
     expect(tokenize(payload)).toEqual(expect.any(String));
+  });
+
+  it('returns the payload from a token', () => {
+    const payload = {
+      name: 'Gram-Gram',
+      email: 'oldladybreath@grandma.com'
+    };
+    const token = tokenize(payload);
+    expect(untokenize(token)).toEqual({
+      name: 'Gram-Gram',
+      email: 'oldladybreath@grandma.com'
+    });
   });
 });
