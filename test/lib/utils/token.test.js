@@ -1,5 +1,4 @@
 const { tokenizer, untokenizer } = require('../../../lib/utils/token');
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 describe('jwt token', () => {
@@ -18,9 +17,10 @@ describe('jwt token', () => {
       name:'Cols',
       age:34
     });
+
     const obj = untokenizer(token);
 
-    expect(obj.payload).toEqual({
+    expect(obj).toEqual({
       name: 'Cols',
       age: 34
     });
