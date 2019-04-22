@@ -52,4 +52,15 @@ describe('bcrypt', () => {
                 expect(result).toBeTruthy();
             });
     });
+
+    it('returns false if comparison doesnt match', () => {
+        const password = 'password';
+        return hash(password)
+            .then(hashed => {
+                return compare('passwordWrong', hashed);
+            })
+            .then(result => {
+                expect(result).toBeFalsy();
+            });
+    });
 });
