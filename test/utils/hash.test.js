@@ -11,17 +11,32 @@ describe('bcrypt hash tests', () => {
       }); 
   });
 
-});
+  it('creates hashed passwords that are different', () => {
+    return bcrypt.hash('bonnie', 10)
+      .then(hashed => {
+        return Promise.all([
+          hashed,
+          bcrypt.hash('bonnie', 10)
+        ])
+          .then(([pw1, pw2]) => {
+            expect(pw1).not.toEqual(pw2);
+          });
+      });
+  });
 
-it('creates hashed passwords that are different', () => {
-  return bcrypt.hash('bonnie', 10)
-    .then(hashed => {
-      return Promise.all([
-        hashed,
-        bcrypt.hash('bonnie', 10)
-      ])
-        .then(([pw1, pw2]) => {
-          expect(pw1).not.toEqual(pw2);
-        });
-    });
+  it('creates the same hash given the same salt', () => {
+    const password = 'magnolia';
+    const salt = '$2b$10$ABCDEFGHIABCDEFGHI1234';
+    return bcrypt.hash(password, salt)
+      .then(hashed => {
+        return Promise.all([
+          Promise.resolve(hashed),
+          bcrypt.hash(password, salt)
+        ])
+          .then(([pw1, pw2]) => {
+            expect(pw1).toEqual(pw2);
+          });
+      });
+  });
+
 });
