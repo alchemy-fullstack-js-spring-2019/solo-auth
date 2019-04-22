@@ -5,7 +5,8 @@ describe('bcrypt', () => {
     const password = 'password';
     return hash(password)
       .then(hashedPassword => {
-        expect(hashedPassword).toBeDefined();
+        expect(hashedPassword).toEqual(expect.any(String));
+        expect(hashedPassword).not.toEqual(password);
       });
   });
 });
