@@ -49,6 +49,7 @@ describe('hash function tests', () => {
     return hash(password)
       .then(hashed => {
         expect(hashed).toBeDefined();
+        expect(hashed).not.toEqual(password);
       });
   });
 
