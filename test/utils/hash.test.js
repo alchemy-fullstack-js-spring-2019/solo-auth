@@ -1,4 +1,4 @@
-const passHash = require('../../lib/utils/hash');
+const { passHash, passCompare } = require('../../lib/utils/hash');
 const bcrypt = require('bcryptjs');
 
 describe('hash stuff', () => {
@@ -15,13 +15,16 @@ describe('hash stuff', () => {
         expect(hashedPassword).not.toEqual(otherHash)
       );
   });
-  /*could also be as simple as:
-  it(returns a password, ()=> {
-    return passHash('coolpw123')
-    .then(hashedPassword => {
-      expect(hashedPassword).toEqual(expect.any(String));
-      expect(hashedPassword).not.toEqual('coolpw123');
-    })
-  })
-  */
+  
+  it('can compare passwords', () => {
+    const password = 'coolpw123';
+
+    return passHash(password)
+      .then(hashedPassword => {
+        return passCompare('coolpw123', hashedPassword);
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
 });
