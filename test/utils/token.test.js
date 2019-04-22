@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { tokenize } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 
 describe('token', () => {
@@ -9,8 +9,20 @@ describe('token', () => {
       email: 'tom@myspace.com'
     });
 
-    console.log(token);
-
     expect(token).toEqual(expect.any(String));
+  });
+
+  it('verifies a token', () => {
+    const token = tokenize({
+      name: 'Steve',
+      age: 1
+    });
+
+    const obj = untokenize(token);
+
+    expect(obj).toEqual({
+      name: 'Steve',
+      age: 1
+    });
   });
 });
