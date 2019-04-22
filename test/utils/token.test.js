@@ -29,6 +29,10 @@ describe('jwt tests', () => {
     expect(body).toEqual({ payload: { animal: 'elephants' }, iat: expect.any(Number), exp: expect.any(Number) });
   });
 
+  it('tows an error with a bogus token', () => {
+    expect(() => untokenize('ffff').toThrow('Bogus Token'));
+  });
+
 
 
 
