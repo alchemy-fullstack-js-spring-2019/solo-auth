@@ -7,10 +7,10 @@ describe('jwt token test', () => {
     expect(token).toEqual(expect.any(String));
   });
 
-  it('can verify a token', () => {
+  it('can untokenize a token', () => {
     const token = tokenize({ yo: 'there' });
     const obj = untokenize(token);
-    expect(obj.payload).toEqual({
+    expect(obj).toEqual({
       yo: 'there'
     });
   });
