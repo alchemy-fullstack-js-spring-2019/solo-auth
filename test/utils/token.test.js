@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { tokenize } = require('../../lib/utils/token');
+const { untokenize } = require('../../lib/utils/token');
 // example token = jwt.sign({ foo: 'bar' }, 'shhhhh');
 
 describe('jwt tests', () => {
@@ -9,10 +10,18 @@ describe('jwt tests', () => {
     expect(token).toEqual(expect.any(String));
   });
 
+  it('can create a token with expiration', () => {
+    const token = tokenize({
+      name: 'name',
+      email: 'test@email'
+    });
+    expect(token).toEqual(expect.any(String));
+  });
+
   it('can verify a token', () => {
-    const token = jwt.sign({ paylod: { animal: 'elephants' } }, 'secret');
-    const body = jwt.verify(token, 'secret');
-    expect(body).toEqual({ paylod: { animal: 'elephants' }, iat: expect.any(Number) });
+    const token = tokenize({ animal: 'elephants' });
+    const body = untokenize(token);
+    expect(body).toEqual({ animal: 'elephants' });
   });
   
   it('can verify a token with expiration', () => {
@@ -20,17 +29,6 @@ describe('jwt tests', () => {
     const body = jwt.verify(token, 'secret', { expiresIn: '1h' });
     expect(body).toEqual({ payload: { animal: 'elephants' }, iat: expect.any(Number), exp: expect.any(Number) });
   });
-
-  it('can create a token with expiration', () => {
-    const token = tokenize({
-      payload: {
-        name: 'name',
-        email: 'test@email'
-      }
-    });
-    expect(token).toEqual(expect.any(String));
-  });
-
 
 
 
