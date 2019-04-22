@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { token, untokenize } = require('../../lib/utils/token');
+const { token, untokenize, verifyExpiration } = require('../../lib/utils/token');
 
 describe('jwt', () => {
   it('can create a token', () => {
@@ -9,13 +9,13 @@ describe('jwt', () => {
     expect(result).toEqual(expect.any(String));
   });
 
-  it('can verify a token', () => {
+  it('can untokenize a token', () => {
     const payload = { _id: 23455, email: 'megan@megan.com' };
     const body = token(payload);
 
     const obj = untokenize(body);
 
-    expect(obj.payload).toEqual({
+    expect(obj).toEqual({
       _id: 23455, email: 'megan@megan.com' 
     });
   });
@@ -23,7 +23,7 @@ describe('jwt', () => {
   it('can verify a token with expiration', () => {
     const newToken = token({ _id: 23455, email: 'megan@megan.com' });
 
-    const obj = untokenize(newToken);
+    const obj = verifyExpiration(newToken);
 
     expect(obj).toEqual({ 
       exp: expect.any(Number), 
