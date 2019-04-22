@@ -12,4 +12,9 @@ describe('bcrypt', () => {
         expect(result).toBeTruthy();
       })
   });
+
+  it('takes a password and returns a hashed password', () => {
+    return hash('password')
+      
+  })
 });
