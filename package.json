@@ -11,6 +11,9 @@
     "test": "jest --verbose --runInBand",
     "test:watch": "npm run test -- --watch"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chrispiccaro18/solo-auth.git"
@@ -29,6 +32,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "dotenv": "^7.0.0",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.5.3"
   }
 }
