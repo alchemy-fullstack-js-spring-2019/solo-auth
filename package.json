@@ -7,7 +7,7 @@
     "lib": "lib",
     "test": "test"
   },
-  "jest" : {
+  "jest": {
     "testEnvironment": "Node"
   },
   "scripts": {
@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "eslint": "^5.16.0",
-    "jest": "^24.7.1"
+    "jest": "^24.7.1",
+    "jsonwebtoken": "^8.5.1"
   }
 }
