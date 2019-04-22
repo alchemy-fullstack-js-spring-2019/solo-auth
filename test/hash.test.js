@@ -1,11 +1,12 @@
 const bcrypt = require('bcryptjs');
-const hashFn = require('../lib/utils/hash.js');
+const { hashFn, compare } = require('../lib/utils/hash.js');
 
 describe('hashing', () => {
   it('uses the hash function to take a regular string password and return its hashed version', () => {
     const password = 'passwordooeeoo'
-      hashFn(password)
+      return hashFn(password)
         .then(hashedPwd => {
+          expect(hashedPwd).toEqual(expect.any(String))
           expect(password).not.toEqual(hashedPwd)
         })
   });
@@ -20,6 +21,17 @@ describe('hashing', () => {
       })
       .then(([hashed, hashedHashed]) => {
         expect(hashed).not.toEqual(hashedHashed)
-      })
-  })
+      });
+  });
+  it('compares a string password and its hashed version and returns true since they are the same', () => {
+    const password = 'hackme';
+    hashFn(password)
+      .then(hashedPwd => {
+        compare('hackme', hashedPwd)
+        .then(boolean => {
+          expect(boolean).toBeTruthy;
+        });
+      });
+  });
 });
+
