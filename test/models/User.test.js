@@ -9,7 +9,7 @@ describe('User model', () => {
     });
     expect(user.toJSON()).toEqual({
       _id: expect.any(mongoose.Types.ObjectId),
-      emai: 'email@email.com'
+      email: 'email@email.com'
     });
   });
   it('has a temp password', ()=> {
