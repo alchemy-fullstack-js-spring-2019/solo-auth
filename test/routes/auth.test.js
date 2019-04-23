@@ -1,24 +1,64 @@
 require('dotenv').config();
-const { tokenize } = require('../../lib/utils/token');
-const ensureAuth = require('../../lib/middleware/ensureAuth');
+const mongoose = require('mongoose');
+const request = require('supertest');
+const connect = require('../../lib/utils/connect');
+const app = require('../../lib/app');
+const User = require('../../lib/models/User');
 
-describe('ensureAuth middlware', () => {
-  it('validates a good token', done => {
-    const token = tokenize({
-      email: 'test@test.com'
-    });
+describe('auth routes', () => {
+  beforeAll(() => {
+    return connect();
+  });
 
-    const req = {
-      token
-    };
-    const res = {};
-    const next = () => {
-      expect(req.user).toEqual({
-        email: 'test@test.com'
+  beforeEach(() => {
+    return mongoose.connection.dropDatabase();
+  });
+
+  afterAll(() => {
+    return mongoose.connection.close();
+  });
+
+  it('can signup a new user', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'name@email.com',
+        pw: 'password1234'
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'name@email.com',
+          },
+          token: expect.any(String)
+        });
       });
-      done();
-    };
+  });
 
-    ensureAuth(req, res, next);
+  it('can signin a user', () => {
+    return User.create({
+      email: 'name@email.com',
+      pw: 'password1234'
+    })
+      .then((user) => {
+        // console.log(user);
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({
+            email: 'name@email.com',
+            pw: 'password1234'
+          });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'name@email.com'
+          },
+          token: expect.any(String)
+        });
+      });
+
   });
 });
