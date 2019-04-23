@@ -64,7 +64,4 @@ describe('authorize users with tokens', () => {
       });
   });
 
-  it('can verify a user`s token', () => {
-    
-  });
 });
