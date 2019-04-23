@@ -7,7 +7,6 @@ const User = require('../../lib/models/User.js');
 
 describe('crud for testing a user\'s authentication', () => {
   beforeAll(() => {
-    //why do we have to return in front of this and the afterAll but not in front of the dropDatabase?
     return connect();
   });
 
@@ -16,7 +15,7 @@ describe('crud for testing a user\'s authentication', () => {
   });
 
   beforeEach(() => {
-    mongoose.connection.dropDatabase();
+    return mongoose.connection.dropDatabase();
   });
   //user sign up give them a token 
   //user sign in, compares password with hashed password
@@ -29,7 +28,6 @@ describe('crud for testing a user\'s authentication', () => {
       password: 'youllneverguess'
     })
     .then(res => {
-      console.log(res.body)
       expect(res.body).toEqual({
         user: {
           _id: expect.any(String),
@@ -38,6 +36,31 @@ describe('crud for testing a user\'s authentication', () => {
         token: expect.any(String)
       });
     });
+  });
+  it('signs a user in, compares password with hashed password', () => {
+     return User
+      .create({
+        email: 'intro_mode@email.com',
+        clearPassword: 'youllneverguess'
+      })
+      //otherwise we cant sign in if they dont exist
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({
+            email: 'intro_mode@email.com',
+            clearPassword: 'youllneverguess'
+          });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            email: 'intro_mode@email.com',
+            _id: expect.any(String)
+          },
+          token: expect.any(String)
+        });
+      });
   });
 });
 
