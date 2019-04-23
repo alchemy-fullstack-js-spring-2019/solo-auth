@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { hash } = require ('../../lib/utils/hash');
+const { untokenize } = require('../../lib/utils/token');
 const User = require('../../lib/models/User');
 
 describe('User model', () => {
@@ -64,15 +65,17 @@ describe('User model', () => {
       });
   });
 
-  // using async await
-  // it('can compare a good password', async() => {
-  //   const passwordHash = await hash('password1234');
-  //   const user = new User({
-  //     email: 'test@test.com',
-  //     passwordHash
-  //   });
-    
-  //   const result = await user.compare('password1234');
-  //   expect(result).toBeTruthy();
-  // });
+  it('can create an auth token', () => {
+    const user = new User({
+      email: 'test@test.com',
+      passwordHash: 'randomHash'
+    });
+
+    const token = user.authToken();
+    const payload = untokenize(token);
+    expect(payload).toEqual({
+      email: 'test@test.com',
+      _id: user._id.toString()
+    });
+  });
 });
