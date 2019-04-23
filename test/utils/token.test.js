@@ -1,9 +1,9 @@
 require('dotenv').config();
-const { signToken, verifyToken } = require('../../lib/utils/token');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 describe('token tests', () => {
   it('can create a token', () => {
-    const token = signToken({
+    const token = tokenize({
       payload: {
         _id: '1234',
         email: 'cosmo@cosmo.com'
@@ -14,16 +14,16 @@ describe('token tests', () => {
   });
 
   it('can untokenize', () => {
-    const token = signToken({
+    const token = tokenize({
       payload: {
         _id: '1234',
         email: 'cosmo@cosmo.com'
       }
     });
 
-    const payload = verifyToken(token);
+    const payload = untokenize(token);
 
-    expect(payload.payload).toEqual({
+    expect(payload).toEqual({
       _id: '1234',
       email: 'cosmo@cosmo.com'
     });
