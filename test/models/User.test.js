@@ -1,30 +1,109 @@
-const User = require('../../lib/models/User.js');
+require('dotenv').config();
 const mongoose = require('mongoose');
+const { untokenize } = require('../../lib/utils/tokenize');
+const User = require('../../lib/models/User');
 
-it('validates a good model', () => {
-  const user = new User({ email: 'test@test.com' });
-  expect(user.toJSON()).toEqual({
-    email: 'test@test.com',
-    _id: expect.any(mongoose.Types.ObjectId) });
+describe('User model', () => {
+  beforeAll(() => {
+    return mongoose.connect('mongodb://localhost:27017/authTest', {
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useNewUrlParser: true
+    });
+  });
+
+  beforeEach(() => {
+    return mongoose.connection.dropDatabase();
+  });
+
+  afterAll(() => {
+    return mongoose.connection.close();
+  });
+
+  it('has an email', () => {
+    const user = new User({
+      email: 'test@test.com'
+    });
+
+    expect(user.toJSON()).toEqual({
+      _id: expect.any(mongoose.Types.ObjectId),
+      email: 'test@test.com'
+    });
+  });
+
+  it('has a _tempPassword', () => {
+    const user = new User({
+      email: 'test@test.com',
+      password: 'password123'
+    });
+
+    expect(user._tempPassword).toEqual('password123');
+  });
+
+  it('adds a username', () => {
+    const user = new User({
+      email: 'test@test.com',
+      passwordHash: '1234'
+    });
+
+    expect(user.toJSON()).toEqual({
+      _id: expect.any(mongoose.Types.ObjectId),
+      email: 'test@test.com'
+    });
+  });
+
+  it('can compare a good password', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password1234'
+    })
+      .then(user => {
+        return user.compare('password1234');
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
+
+  it('can compare a bad password', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password1234'
+    })
+      .then(user => {
+        return user.compare('badPassword');
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
+      });
+  });
+
+  it('can create a authToken', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => {
+        const token = user.authToken();
+        const payload = untokenize(token);
+        expect(payload).toEqual({
+          _id: user._id.toString(),
+          email: 'test@test.com'
+        });
+      });
+  });
+
+  it('can create a authToken withDB', () => {
+    const user = new User({
+      email: 'test@test.com',
+      passwordHash: 'randomHash'
+    });
+
+    const token = user.authToken();
+    const payload = untokenize(token);
+    expect(payload).toEqual({
+      _id: user._id.toString(),
+      email: 'test@test.com'
+    });
+  });
 });
-
-it('has a required email', () => {
-  const user = new User({});
-  const errors = user.validateSync().errors;
-
-  expect(errors.email.message).toEqual('Path `email` is required.');
-});
-
-it('uses virtual to set a password', () => {
-  const user = new User({ email: 'test@test.com', password: 'dude' });
-  expect(user._tempPassword).toEqual('dude');
-});
-
-// it('uses the temp pass to set a real pass', () => {
-//   return User.create({ email: 'test@test.com', password:'passed' })
-//     .then(createdUser => {
-//       console.log(createdUser);
-
-//       return User.findById(createdUser._id);
-//     });
-// });
