@@ -12,7 +12,15 @@ describe('User tests', () => {
   it('has email required', () => {
     const user = new User({});
     const errors = user.validateSync().errors;
-    console.log(errors);
     expect(errors.email.message).toEqual('Path `email` is required.');
+  });
+
+  it('has a temp pw', () => {
+    const user = new User({
+      email: 'email@aol.com',
+      passwordVirtual: 'flanderssucks'
+    });
+
+    expect(user._tempPassword).toEqual('flanderssucks');
   });
 });
