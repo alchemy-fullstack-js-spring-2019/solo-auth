@@ -16,14 +16,14 @@
     "jest": "^24.7.1",
     "mongoose": "^5.5.3",
     "morgan": "^1.9.1",
-    "nodemon": "^1.18.11",
-    "supertest": "^4.0.2"
+    "nodemon": "^1.18.11"
   },
   "jest": {
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "supertest": "^4.0.2"
   },
   "scripts": {
     "test": "jest --verbose",
@@ -43,4 +43,3 @@
   },
   "homepage": "https://github.com/bpkotowski/solo-auth#readme"
 }
-
