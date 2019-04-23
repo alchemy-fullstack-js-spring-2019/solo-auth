@@ -12,7 +12,7 @@ describe('User model', () => {
     });
   });
 
-  it('has a virtual password', () => {
+  it('has a virtual password (temp password)', () => {
     const user = new User({
       email: 'emily@emilybemily.com',
       password: 'password123'
