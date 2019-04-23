@@ -1,13 +1,8 @@
 require('dotenv').config();
 const { hash, compare } = require('../lib/utils/hash');
-const User = require('../lib/models/User');
-const mongoose = require('mongoose');
+
 
 describe('hash test', () => {
-  // beforeAll(() => {
-  //     return mongoose.connect('mongodb://localhost')
-  // })
-
   it('takes a string and returns a promise that resolves with a hashed password', () => {
     const password = 'password1234';
     return hash(password)
