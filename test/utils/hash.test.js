@@ -50,11 +50,25 @@ describe('BCRYPTS', () => {
       });
   });
 
-  it.skip('compare hashes based on the same password', () => {
+  it('compare hashes based on the same password', () => {
     const password = '123';
     return hash(password)
-      .then(() => {
-        return compare();
+      .then((hashedP) => {
+        return compare(password, hashedP);
+      })
+      .then(result => {
+        expect(result).toEqual(true);
+      });
+  });
+
+  it('compare bad passwords', () => {
+    const password = '123';
+    return hash(password)
+      .then((hashedP) => {
+        return compare('password', hashedP);
+      })
+      .then(result => {
+        expect(result).toEqual(false);
       });
   });
 
