@@ -37,7 +37,7 @@ describe('User model tests', () => {
   it('stores a _tempPassword', () => {
     const user = new User({
       email: 'icecreamlov3@hotmail.com',
-      clearPassword: 'i<3IceCream!'
+      password: 'i<3IceCream!'
     });
 
     expect(user.toJSON()).toEqual({
@@ -51,7 +51,7 @@ describe('User model tests', () => {
     return User
       .create({
         email: '1cecreamlov3@hotmail.com',
-        clearPassword: 'i<3IceCream!'
+        password: 'i<3IceCream!'
       })
       .then(createdUser => {
         expect(createdUser.toJSON()).toEqual({
@@ -66,7 +66,7 @@ describe('User model tests', () => {
     return User
       .create({
         email: 'icecream1ov3@hotmail.com',
-        clearPassword: 'i<3IceCream!'
+        password: 'i<3IceCream!'
       })
       .then(createdUser => {
         createdUser.compare('i<3IceCream!')
@@ -80,7 +80,7 @@ describe('User model tests', () => {
     return User
       .create({
         email: '1cecream1ov3@hotmail.com',
-        clearPassword: 'i<3IceCream!'
+        password: 'i<3IceCream!'
       })
       .then(createdUser => {
         createdUser.compare('iIceCream!')
@@ -93,7 +93,7 @@ describe('User model tests', () => {
   it('creates and returns a token', () => {
     const user = new User({
       email: 'icecreaml0v3@hotmail.com',
-      clearPassword: 'i<3IceCream!'
+      password: 'i<3IceCream!'
     });
     expect(user.authToken()).toEqual(expect.any(String));
   });
@@ -101,7 +101,7 @@ describe('User model tests', () => {
   it('returns a promise containing the user from a token', () => {
     const user = new User({
       email: '1cecreaml0v3@hotmail.com',
-      clearPassword: 'i<3IceCream!'
+      password: 'i<3IceCream!'
     });
     const token = user.authToken();
     return User.findByToken(token)
