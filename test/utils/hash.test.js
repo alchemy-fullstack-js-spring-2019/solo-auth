@@ -1,33 +1,35 @@
-const bcrypt = require('bcryptjs');
+const { hash, compare } = require('../../lib/utils/hash');
 
-describe('bcrypt', () => {
+describe('hashing function', () => {
   it('hashes a password', () => {
-    const password = 'password';
-    return bcrypt.hash(password, 10)
+    return hash('password')
       .then(hashedPassword => {
-        return Promise.all([
-          Promise.resolve(hashedPassword),
-          bcrypt.hash(password, 10)
-        ]);
-      })
-      .then(([hash1, hash2]) => {
-        expect(hash1).not.toEqual(hash2);
+        expect(hashedPassword).toEqual(expect.any(String));
+        expect(hashedPassword).not.toEqual('password');
       });
   });
 
-  it('creates the same hash given the same salt', () => {
+  it('can compare passwords', () => {
     const password = 'password';
-    const salt = '$2b$10$AAAAAAAAAAAAAAAAAAAAAA';
 
-    return bcrypt.hash(password, salt)
+    return hash(password)
       .then(hashedPassword => {
-        return Promise.all([
-          Promise.resolve(hashedPassword),
-          bcrypt.hash(password, salt)
-        ]);
+        return compare('password', hashedPassword);
       })
-      .then(([hash1, hash2]) => {
-        expect(hash1).toEqual(hash2);
+      .then(compareResult => {
+        expect(compareResult).toBeTruthy();
+      });
+  });
+
+  it('can compare bad passwords', () => {
+    const password = 'password';
+
+    return hash(password)
+      .then(hashedPassword => {
+        return compare('password44', hashedPassword);
+      })
+      .then(compareResult => {
+        expect(compareResult).toBeFalsy();
       });
   });
 });
