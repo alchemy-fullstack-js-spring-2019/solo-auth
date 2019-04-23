@@ -18,5 +18,13 @@ it('has a required email', () => {
 it('uses virtual to set a password', () => {
   const user = new User({ email: 'test@test.com', password: 'dude' });
   expect(user._tempPassword).toEqual('dude');
-  
 });
+
+// it('uses the temp pass to set a real pass', () => {
+//   return User.create({ email: 'test@test.com', password:'passed' })
+//     .then(createdUser => {
+//       console.log(createdUser);
+
+//       return User.findById(createdUser._id);
+//     });
+// });
