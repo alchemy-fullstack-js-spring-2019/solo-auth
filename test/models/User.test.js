@@ -23,5 +23,6 @@ describe('models', () => {
     });
     expect(user._tempPassword).toEqual('password');
   });
-  
+
+
 });
