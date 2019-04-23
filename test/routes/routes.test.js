@@ -62,4 +62,29 @@ describe('routes tests', () => {
       });
   });
 
+  it('verifies a user', () => {
+    User.create({
+      email: 'test@email.com',
+      password: '123butts'
+    })
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({
+            user: {
+              email: 'test@email.com',
+              password: '123butts' 
+            }
+          })
+          .then(res => {
+            expect(res.body).toEqual({
+              user: {
+                _id: expect.any(String),
+                email: 'test@email.com'
+              }, token: expect.any(String)
+            });
+          });
+      });
+  });
+
 });
