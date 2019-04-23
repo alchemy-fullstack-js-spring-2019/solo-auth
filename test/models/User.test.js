@@ -3,6 +3,7 @@ require('dotenv');
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
 const hash = require('../utils/hash');
+const { untokenize } = require('../../lib/utils/token');
 
 // create a test it('validates a good model', () => { }
 // create a new user with const user = new User({ email: 'test@test.com' });
