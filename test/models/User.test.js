@@ -33,4 +33,17 @@ describe('User model', () => {
     });
     expect(user._tempPassword).toEqual('secret');
   });
+
+  it('hashes the temporary password and adds hashedPassword to the user object', () => {
+    const user = new User({
+      email: 'megan@megan.com',
+      password: 'funny'
+    });
+    
+    expect(user.toJSON()).toEqual({
+      email: 'megan@megan.com',
+      _id: expect.any(mongoose.Types.ObjectId),
+      passwordHash: expect.any(String)
+    });
+  });
 });
