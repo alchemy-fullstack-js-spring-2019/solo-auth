@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+// eslint-disable-next-line no-unused-vars
 const { hash, compare } = require('../../lib/utils/hash');
 
 describe('hashing functions', () => {

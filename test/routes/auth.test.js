@@ -57,6 +57,4 @@ describe('auth routes', () => {
         });
       });
   });
-
-
 });
