@@ -4,6 +4,7 @@ const app = require('../lib/app');
 const mongoose = require('mongoose');
 const connect = require('../lib/utils/connect');
 const User = require('../lib/models/User');
+const jwt = require('jsonwebtoken');
 
 
 describe('auth routes', () => {
@@ -58,6 +59,26 @@ describe('auth routes', () => {
                     },
                     token: expect.any(String)
                 });
+            });
+    });
+
+    it('can verify a user', () => {
+        return User.create({
+            email: 'test@test.com',
+            password: 'pw123'
+        })
+            .then(() => {
+                return request(app)
+                    .get('/api/v1/auth/verify')
+                    .then(res => {
+                        expect(res).toBe({
+                            user: {
+                                _id: expect.any(String),
+                                email: 'test@test.com'
+                            },
+                            token: expect.any(String)
+                        });
+                    });
             });
     });
 });
