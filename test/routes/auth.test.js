@@ -49,4 +49,19 @@ describe('auth routes', () => {
         });
       });
   });
+
+  it('verifies using token', () => {
+    return request(app)
+      .post('/auth/signup')
+      .send({ email: 'tester', password: '1234' })
+      .then(created => {
+        console.log(created.body.token);
+        return request(app)
+          .get('/auth/verify')
+          .set('Authorization', created.body.token)
+          .then(res => {
+            expect(res.body).toEqual({ _id: expect.any(String), email: 'tester' });
+          });
+      });
+  });
 });
