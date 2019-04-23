@@ -19,4 +19,13 @@ describe('User model tests', () => {
     const error = user.validateSync().errors;
     expect(error.email.message).toEqual('Path `email` is required.');
   });
+
+  it('stores a _tempPassword', () => {
+    const user = new User({
+      email: 'icecreamlov3@hotmail.com',
+      password: 'i<3IceCream!'
+    });
+
+    expect(user._tempPassword).toEqual('i<3IceCream!');
+  });
 });
