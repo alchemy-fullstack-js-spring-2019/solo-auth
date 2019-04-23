@@ -48,7 +48,22 @@ describe('User model', () => {
         expect(result).toBeTruthy();
       });
   });
-  
+
+  it('can compare a bad password', () => {
+    return hash('password1234')
+      .then(passwordHash => {
+        const user = new User({
+          email: 'test@test.com',
+          passwordHash
+        });
+
+        return user.compare('password');
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
+      });
+  });
+
   // using async await
   // it('can compare a good password', async() => {
   //   const passwordHash = await hash('password1234');
