@@ -1,7 +1,26 @@
+require('dotenv').config();
+const mongoose = require('mongoose');
+const { untokenize } = require('../../lib/utils/token');
 const User = require('../../lib/models/User');
-const { bcrypt } = require('../../lib/utils/hash');
 
 describe('User tests', () => {
+  beforeAll(() => {
+    return mongoose.connect('mongodb://localhost:27017/auth',
+      { 
+        useCreateIndex: true,
+        useFindAndModify: false,
+        useNewUrlParser: true
+      });
+  });
+
+  beforeEach(() => {
+    return mongoose.connection.dropDatabase();
+  });
+
+  afterAll(() => {
+    return mongoose.connection.close();
+  });
+
   it('validates good model', () => {
     const user = new User({ email: 'email@aol.com' });
     expect(user.toJSON()).toEqual({ 
@@ -19,19 +38,47 @@ describe('User tests', () => {
   it('has a temp pw', () => {
     const user = new User({
       email: 'email@aol.com',
-      passwordVirtual: 'flanderssucks'
+      password: 'flanderssucks'
     });
 
     expect(user._tempPassword).toEqual('flanderssucks');
   });
 
-  it('compares a good pw using a method', () => {
-
+  it('add a user', () => {
     const user = new User({
-      email: 'email@aol.com',
-      passwordVirtual: 'flanderssucks'
+      email: 'test@test.com',
+      passwordHash: 'password'
     });
 
-    expect(user.compare(passwordVirtual)).toBeTruthy();
+    expect(user.toJSON()).toEqual({
+      _id: expect.any(mongoose.Types.ObjectId),
+      email: 'test@test.com'
+    });
+  });
+
+  it('compares a good pw', () => {
+    return User.create({
+      email: 'testy@test.com',
+      password: 'password123'
+    })
+      .then(user =>{
+        return user.compare('password123');  
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
+  });
+
+  it('compares a bad pw', () => {
+    return User.create({
+      email: 'testy@test.com',
+      password: 'password123'
+    })
+      .then(user =>{
+        return user.compare('smurf');  
+      })
+      .then(result => {
+        expect(result).toBeFalsy();
+      });
   });
 });

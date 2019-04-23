@@ -1,25 +1,18 @@
-const bcryptjs = require('bcryptjs');
-const { bcrypt, compare } = require('../../lib/utils/hash');
+const bcrypt = require('bcryptjs');
+const { hash, compare } = require('../../lib/utils/hash');
 
 describe('HASH', () => {
   it('hashes a pw using bcrypt', () => {
-    const password = 'mypass';
-    return bcryptjs.hash(password, 10)
-      .then((hash) => {
-        return Promise.all([
-          hash,
-          bcrypt(password)
-        ]);
+    return hash('password')
+      .then(hashedPw => {
+        expect(hashedPw).toEqual(expect.any(String));
       })
-      .then(([hash1, hash2]) => {
-        expect(hash2).not.toEqual(hash1);
-      });
   });
 
   it('compares passwords', () => {
     const password = 'password';
     
-    return bcrypt(password)
+    return hash(password)
       .then(hashPw => {
         return compare ('password', hashPw);
       })
@@ -31,7 +24,7 @@ describe('HASH', () => {
   it('compares passwords', () => {
     const password = 'password';
     
-    return bcrypt(password)
+    return hash(password)
       .then(hashPw => {
         return compare ('smurf', hashPw);
       })
