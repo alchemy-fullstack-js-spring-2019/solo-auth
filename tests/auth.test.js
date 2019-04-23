@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const connect = require('../lib/utils/connect');
 const User = require('../lib/models/User');
 const jwt = require('jsonwebtoken');
-
+const { tokenize } = require('../lib/utils/token');
 
 describe('auth routes', () => {
     beforeAll(() => {
@@ -62,23 +62,32 @@ describe('auth routes', () => {
             });
     });
 
-    it('can verify a user', () => {
+    it('can verify a user', async() => {
         return User.create({
             email: 'test@test.com',
             password: 'pw123'
         })
             .then(() => {
                 return request(app)
+                    .post('/api/v1/auth/signin')
+                    .send({ 
+                        email: 'test@test.com',
+                        password: 'pw123' 
+                    });
+
+            })
+            .then(res => {
+                return request(app)
                     .get('/api/v1/auth/verify')
+                    .set('Authorization', `Bearer ${res.body.token}`)
                     .then(res => {
-                        expect(res).toBe({
-                            user: {
-                                _id: expect.any(String),
-                                email: 'test@test.com'
-                            },
-                            token: expect.any(String)
+                        expect(res.body).toEqual({
+                            _id: expect.any(String),
+                            email: 'test@test.com'
+                        
                         });
                     });
+                    
             });
     });
 });
