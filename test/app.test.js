@@ -98,4 +98,24 @@ describe('auth routes', () => {
         });
       });
   });
+
+  it('verifies a user', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'icecreamlov3@hotmail.com',
+        password: 'i<3IceCream!',
+      })
+      .then(res => {
+        return request(app)
+          .get('/api/v1/auth/verify')
+          .set('Authorization', `Bearer ${res.body.token}`);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          email: 'icecreamlov3@hotmail.com'
+        });
+      });
+  });
 });
