@@ -3,10 +3,11 @@ const mongoose = require('mongoose');
 const hash = require('../../lib/utils/hash');
 const compare = require('../../lib/utils/compare');
 const { tokenize, untokenize } = require('../../lib/utils/token');
+require('dotenv').config();
 
 describe('User model', () => {
     beforeAll(() => {
-        
+
     });
 
     it('validates a good model', () => {
@@ -50,23 +51,23 @@ describe('User model', () => {
             });
     });
 
-    it('ryans compare', async() => {
-        const passwordHash = await hash('password1234');
-        const user = new User({
-            email: 'test@test.com',
-            passwordHash
-        });
+    // it('ryans compare', async() => {
+    //     const passwordHash = await hash('password1234');
+    //     const user = new User({
+    //         email: 'test@test.com',
+    //         passwordHash
+    //     }); 
 
-        const result = await user.compare('password1234');
-        expect(result).toBeTruthy;
-    });
+    //     const result = await user.compare('password1234');
+    //     expect(result).toBeTruthy;
+    // });
 
-    it('authToken', async() => {
+    it('authToken', () => {
         const user = new User({ email: 'test@test.com', password: 'pw123' });
-        const returnedToken = await user.authToken();
-        const untokenized = await untokenize(returnedToken);
+        const returnedToken = user.authToken();
+        const untokenized = untokenize(returnedToken);
 
-        expect(untokenized).toEqual({ email: 'test@test.com', _id: expect.any(String) });
+        expect(untokenized).toEqual({ email: 'test@test.com', _id: user._id.toString() });
     });
 });
 
