@@ -7,7 +7,7 @@ const { untokenize } = require ('../../lib/utils/token');
 
 describe('User model', () => {
     beforeAll(() => {
-        console.log('connecting ot mongoose');
+       
         return mongoose.connect('mongodb://localhost:27017/auth', {
             useCreateIndex: true,
             useFindAndModify: false,
@@ -100,9 +100,9 @@ describe('User model', () => {
         })
             .then(user => {
                 const token = user.authToken();
-                console.log('token', token);
+          
                 const payload = untokenize(token);
-                console.log('payload', payload);
+            
                 expect(payload).toEqual({
                     _id: user._id.toString(),
                     email: 'test@test.com'
