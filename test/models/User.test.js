@@ -6,10 +6,10 @@ describe('User model', () => {
     const user = new User({
       email: 'test@test.com'
     });
+    expect(user.toJSON()).toEqual({
+      _id: expect.any(mongoose.Types.ObjectId),
+      email: 'test@test.com'
+    });
   });
 
-  expect(user.toJSON()).toEqual({
-    _id: expect.any(mongoose.Types.ObjectId),
-    email: 'test@test.com'
-  });
 });
