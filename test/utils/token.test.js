@@ -15,12 +15,12 @@ describe('token tests', () => {
       hi: 'there'
     };
     const token = tokenize(input);
-    const output = untokenize(token, process.env.AUTH_SECRET);
+    const output = untokenize(token);
     
     expect(output).toEqual(input);
   });
 
   it('throws bogus token', () => {
-    expect(() => untokenize('1234', process.env.AUTH_SECRET)).toThrow('Bogus Token');
+    expect(() => untokenize('1234')).toThrow('Bogus Token');
   });
 });
