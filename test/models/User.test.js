@@ -33,4 +33,12 @@ describe('User model', () => {
     });
     expect(user._tempPassword).toEqual('secret');
   });
+
+  it('returns true if plain text pw matches hashed pw', () => {
+    const user = new User({
+      email: 'megan@megan.com',
+      password: 'alys246'
+    });
+    expect(user.compare(user.password)).toBeTruthy();
+  });
 });
