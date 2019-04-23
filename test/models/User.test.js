@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
+const { hash } = require('../../lib/utils/hash');
 
 describe('User model', () => {
   it('has an email', () => {
@@ -35,5 +36,27 @@ describe('User model', () => {
 
     expect(user.banana()).toEqual('banana');
     expect(User.apple()).toEqual('apple');
+  });
+
+  it('can compare a good password', async() => {
+    const passwordHash = await hash('password1234');
+    const user = new User({
+      email: 'test@test.com',
+      passwordHash
+    });
+
+    const result = await user.compare('password1234');
+    expect(result).toBeTruthy();
+  });
+
+  it('can compare a bad password', async() => {
+    const passwordHash = await hash('password1234');
+    const user = new User({
+      email: 'test@test.com',
+      passwordHash
+    });
+
+    const result = await user.compare('badPassword');
+    expect(result).toBeFalsy();
   });
 });
