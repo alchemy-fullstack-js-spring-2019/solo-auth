@@ -18,13 +18,15 @@ describe('hash function', () => {
 describe('compare function', () => {
   const password = 'password';
   it('returns true if the password matches the hash', () => {
-    return compare(password)
-      .then(hashPass => {
-        expect(hashPass).toBeTruthy;
+    return hash(password)
+      .then(hashedPassword => {
+        return compare('password', hashedPassword);
+      })
+      .then(compareResult => {
+        expect(compareResult).toBeTruthy;
       });
   });
 });
-
 
 // const salt = '$2a$10$oooooooooooooooooooooo';
 
