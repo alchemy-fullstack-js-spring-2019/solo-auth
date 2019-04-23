@@ -1,6 +1,7 @@
+require('dotenv').config();
 const User = require('../../lib/models/User');
-const mongoose = require('mongoose');
 const { hash } = require('../../lib/utils/hash');
+const { untokenize } = require('../../lib/utils/token');
 
 describe('User model test', () => {
   it('validates a good model', () => {
@@ -8,8 +9,7 @@ describe('User model test', () => {
       email: 'marty@powertest.com'
     });
     expect(user.toJSON()).toEqual({
-      email: 'marty@powertest.com',
-      _id: expect.any(mongoose.Types.ObjectId)
+      email: 'marty@powertest.com'
     });
   });
 
@@ -30,6 +30,15 @@ describe('User model test', () => {
     const res = await user.compare('s3cr3tp@zz');
     expect(res).toBeTruthy();
   });
+  it('has compares bad passwords', async() => {
+    const hashPW = await hash('s3cr3tp@zz');
+    const user = new User({
+      email: 'test@martyparty.net',
+      passwordHash: hashPW
+    });
+    const res = await user.compare('notsecretpass');
+    expect(res).toBeFalsy();
+  });
 
   it('has an authToken instance method', async() => {
     const hashPW = await hash('s3cr3tp@zz');
@@ -39,8 +48,10 @@ describe('User model test', () => {
     });
 
     const token = user.authToken();
-    expect(token).toEqual('');
-
+    expect(token).toEqual(expect.any(String));
+    expect(untokenize(token)).toEqual({
+      email: 'test@martyparty.net'
+    });
   });
 
 });
