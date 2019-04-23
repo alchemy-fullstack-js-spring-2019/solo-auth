@@ -1,5 +1,7 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
+const { untokenize } = require('../../lib/utils/token');
 
 describe('User model', () => {
   it('has an email', () => {
@@ -31,5 +33,17 @@ describe('User model', () => {
       email: 'name@email.com'
 
     });
+  });
+  it('can compare a good password', () => {
+    return User.create({
+      email: 'name@email.com',
+      password: 'password1234'
+    })
+      .then(user => {
+        return user.compare('password1234');
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
+      });
   });
 });
