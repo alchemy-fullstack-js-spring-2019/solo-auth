@@ -12,4 +12,12 @@ describe('User model', () => {
     });
   });
 
+  it('has a _tempPassword', () => {
+    const user = new User({
+      email: 'test@test.com',
+      password: 'password123'
+    });
+
+    expect(user.tempPassword).toEqual('password123');
+  });
 });
