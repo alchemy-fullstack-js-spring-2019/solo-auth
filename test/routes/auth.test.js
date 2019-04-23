@@ -37,5 +37,26 @@ describe('auth routes', () => {
       });
   });
 
+  it('can signin a user', () => {
+    return User.create({
+      email: 'test@testy.com',
+      password: 'password1234'
+    })
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({ email: 'test@testy.com', password: 'password1234' });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'test@testy.com'
+          },
+          token: expect.any(String)
+        });
+      });
+  });
+
 
 });
