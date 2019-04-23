@@ -26,6 +26,23 @@ describe('User model', () => {
       password: 'password123'
     });
 
+    expect(user.toJSON()).toEqual({
+      _id: expect.any(mongoose.Types.ObjectId), 
+      email: 'test@test.com' 
+    });
+
     expect(user._tempPassword).toEqual('password123');
+  });
+  
+  it('creates a hashed pw after save', () => {
+    const user = new User({
+      email: 'test@test.com',
+      password: 'password123'
+    });
+
+    user.save()
+      .then(() => {
+        expect(user.passwordHash).toEqual('');
+      });
   });
 });
