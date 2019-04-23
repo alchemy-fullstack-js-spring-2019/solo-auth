@@ -31,8 +31,5 @@ describe('jwt token', () => {
     const body = jwt.verify(token, process.env.AUTH_SECRET, { expiresIn: '1h' });
 
     expect(body).toEqual({ payload: { hi: 'there' }, iat: expect.any(Number), exp: expect.any(Number) });
-  });
-
-  
- 
+  }); 
 });
