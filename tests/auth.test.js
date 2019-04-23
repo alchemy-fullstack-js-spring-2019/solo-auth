@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const connect = require('../lib/utils/connect');
 const User = require('../lib/models/User');
 
+
 describe('auth routes', () => {
     beforeAll(() => {
         return connect();
@@ -27,8 +28,10 @@ describe('auth routes', () => {
             })
             .then(res => {
                 expect(res.body).toEqual({
-                    email: 'test@test.com',
-                    _id: expect.any(String),
+                    user: {
+                        email: 'test@test.com',
+                        _id: expect.any(String),
+                    },
                     token: expect.any(String)
                 });
             });
@@ -40,7 +43,7 @@ describe('auth routes', () => {
             password: 'pw123'
         })
             .then(() => {
-                request(app)
+                return request(app)
                     .post('/api/v1/auth/signin')
                     .send({
                         email: 'test@test.com',
