@@ -76,4 +76,12 @@ describe('User model tests', () => {
           });
       });
   });
+
+  it('returns a token', () => {
+    const user = new User({
+      email: 'icecreamlov3@hotmail.com',
+      clearPassword: 'i<3IceCream!'
+    });
+    expect(user.authToken()).toEqual(expect.any(String));
+  });
 });
