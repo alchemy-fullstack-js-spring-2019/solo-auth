@@ -57,8 +57,32 @@ describe('auth route tests', () => {
           token: expect.any(String)
         });
       });
-
   });
 
+  it('can verify a user', () => {
+    return User.create({
+      email: 'bonnie@acl.com',
+      password: 'imtired'
+    })
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({
+            email: 'bonnie@acl.com',
+            password: 'imtired'
+          });
+      })
+      .then(res => {
+        return request(app)
+          .get('/api/v1/auth/verify')
+          .set('Authorization', res.body.token);
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          email: 'bonnie@acl.com',
+          _id: expect.any(String)
+        });
+      });
+  });
 
 });
