@@ -19,7 +19,7 @@ describe('User model tests', () => {
     expect(errors.email.message).toEqual('Path `email` is required.');
   });
 
-  it('has a password virtual', () => {
+  it('has a password virtual and a banana method', () => {
     const user = new User({
       email: 'bonnie@the-runs.com',
       password: 'theruns'
@@ -31,8 +31,53 @@ describe('User model tests', () => {
     });
 
     expect(user._tempPassword).toEqual('theruns');
-    expect(user.banana()).toEqual('banana');
-    
+    expect(user.banana('!')).toEqual('banana!');
+    expect(User.apple()).toEqual('apple');
+  });
+
+  it('has a saved hash password', () => {
+    const user = new User({
+      email: 'bonnie@the-runs.com',
+      password: 'theruns',
+      passwordHash: 'xyz'
+    });
+    expect(user.passwordHash).toEqual('xyz');    
+  });
+
+  it('compares a correct password to the saved hash', () => {
+    const user = new User({
+      email: 'jkhdgsh@lkjdskgj.com',
+      password: 'leland',
+      passwordHash: '$2b$10$ABCDEFGHIABCDEFGHI123uAVZROaIfLowzKSc4PW0gQLe8SwHwNHK'
+    });
+    return user.compare(user.password)
+      .then(result => {
+        console.log('correct pw', result);
+        expect(result).toBeTruthy();
+      });
+  });
+
+  it('compares an incorrect password to the saved hash', () => {
+    const user = new User({
+      email: 'jkhdgsh@lkjdskgj.com',
+      password: 'leland',
+      passwordHash: '$2b$10$ABCDEFGHIABCDEFGHI123uAVZROaIfLowzKSc4PW0gQLe8SwHwNHK'
+    });
+    return user.compare('banana')
+      .then(result => {
+        console.log('incorrect pw', result);
+        expect(result).toBeFalsy();
+      });
+  });
+
+  it('creates a token', () => {
+    const user = new User({
+      email: 'jkhdgsh@lkjdskgj.com',
+      password: 'leland',
+      passwordHash: '$2b$10$ABCDEFGHIABCDEFGHI123uAVZROaIfLowzKSc4PW0gQLe8SwHwNHK'
+    });
+    const token = user.authToken();
+    expect(token).toEqual(expect.any(String));
   });
 
 });
