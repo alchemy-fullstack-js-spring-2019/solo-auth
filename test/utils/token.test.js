@@ -1,6 +1,7 @@
+require('dotenv').config();
+const { tokenize, untokenize } = require('../../lib/utils/token');
 const jwt = require('jsonwebtoken');
-const { tokenize } = require('../../lib/utils/token');
-
+// jwt not being used???
 describe('jwt token', () => {
   it('can create a token', () => {
     const token = tokenize({
@@ -10,15 +11,18 @@ describe('jwt token', () => {
 
     expect(token).toEqual(expect.any(String));
   });
-  it('can verify a token', () => {
+  it('can untokenize a token', () => {
     const token = tokenize({
-      name: 'spot',
-      age: 11
+      name: 'ruby', 
+      age: 2
     });
-    const obj = jwt.verify(token, process.env.AUTH_SECRET);
+    const obj = untokenize(token);
+    expect(obj).toEqual({
+      name: 'ruby',
+      age: 2
+    });
   });
-  expect(obj.payload).toEqual({
-    name: 'spot',
-    age: 11
+  it('can untokenize a bogus token', () => {
+    expect(() => untokenize('12345')).toThrow('Bogus Token');
   });
 });
