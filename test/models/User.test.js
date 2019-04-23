@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
+const hash = require('../../lib/utils/hash');
+const { verifyToken } = require('../../lib/utils/token');
 
 describe('User model', () => {
   it('validates a good model', () => { 
@@ -33,16 +35,43 @@ describe('User model', () => {
 
     expect(user._tempPassword).toEqual('password123');
   });
-  
-  it('creates a hashed pw after save', () => {
+
+  it('can compare a good password', async() => {
+    const passwordHash = await hash('password123');
     const user = new User({
       email: 'test@test.com',
-      password: 'password123'
+      passwordHash
     });
 
-    user.save()
-      .then(() => {
-        expect(user.passwordHash).toEqual('');
+    const result = await user.comparePw('password123');
+    expect(result).toBeTruthy();
+  });
+
+  it('can compare a hashed password', () => {
+    const password = 'pword123';
+    return hash(password)
+      .then(passwordHash => {
+        const user = new User({
+          email: 'test@test.com',
+          passwordHash
+        });
+        return user.comparePw(password);
+      })
+      .then(result => {
+        expect(result).toBeTruthy();
       });
+  });
+
+  it('can create an authToken', () => {
+    const user = new User({
+      email: 'test@test.com',
+      passwordHash: 'somerandomstring'
+    });
+
+    const token = user.createAuthToken();
+    expect(verifyToken(token)).toEqual({
+      _id: expect.any(String),
+      email: 'test@test.com'
+    });
   });
 });
