@@ -1,4 +1,6 @@
-const { findAuthToken } = require('../../lib/middleware/ensureAuth');
+require('dotenv').config();
+const { tokenize } = require('../../lib/utils/token');
+const { findAuthToken, ensureAuth } = require('../../lib/middleware/ensureAuth');
 
 describe('auth middleware', () => {
 
@@ -12,5 +14,20 @@ describe('auth middleware', () => {
       done();
     }; 
     findAuthToken(req, res, next);
+  });
+
+  it('validates a token from a user request', done => {
+    const token = tokenize({
+      email: 'test@email.com'
+    });
+    const req = { token }; 
+    const res = {};
+    const next = () => {
+      expect(req.user).toEqual({
+        email: 'test@email.com'
+      });
+      done();
+    };
+    ensureAuth(req, res, next);
   });
 });
