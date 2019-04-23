@@ -1,4 +1,4 @@
-require('dotenv').config(); // this always comes first
+require('dotenv').config();
 require('./lib/utils/connect')();
 const app = require('./lib/app');
 
