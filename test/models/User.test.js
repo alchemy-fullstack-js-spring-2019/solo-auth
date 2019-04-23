@@ -1,12 +1,11 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
-const User = require('../../lib/models/User');
+const mongoose = require('mongoose'),
+  connect = require('../../lib/utils/connect'),
+  User = require('../../lib/models/User');
 
 describe('User model tests', () => {
   beforeAll(() => {
-    return mongoose.connect(process.env.MONGODB_URI, () => {
-      console.log('Mongo Connection Started');
-    });
+    connect();
   });
 
   beforeEach(() => {
