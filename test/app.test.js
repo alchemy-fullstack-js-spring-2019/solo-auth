@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require('mongoose'),
   request = require('supertest'),
   app = require('../lib/app'),
