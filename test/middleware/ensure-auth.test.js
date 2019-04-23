@@ -1,8 +1,22 @@
 require('dotenv').config();
 const { createToken } = require('../../lib/utils/token');
-const { ensureAuth } = require('../../lib/middleware/ensure-auth');
+const { ensureAuth, bearerToken } = require('../../lib/middleware/ensure-auth');
 
-describe('ensureAuth middlware', () => {
+describe('ensureAuth middleware', () => {
+  it('grabs the token from req', done => {
+    const token = 'Bearer tokenstring';
+    const req = {
+      get: () => token
+    };
+    const res = {};
+    const next = () => {
+      expect(req.token = 'tokenstring');
+      done();
+    };
+
+    bearerToken(req, res, next);
+  });
+
   it('validates a good token', done => {
     const token = createToken({
       email: 'test@test.com'
