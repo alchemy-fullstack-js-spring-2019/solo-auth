@@ -2,6 +2,7 @@ require('dotenv').config();
 const User = require('../../lib/models/User');
 const { hash } = require('../../lib/utils/hash');
 const { untokenize } = require('../../lib/utils/token');
+const mongoose = require('mongoose');
 
 describe('User model test', () => {
   it('validates a good model', () => {
@@ -9,7 +10,8 @@ describe('User model test', () => {
       email: 'marty@powertest.com'
     });
     expect(user.toJSON()).toEqual({
-      email: 'marty@powertest.com'
+      email: 'marty@powertest.com',
+      _id: expect.any(mongoose.Types.ObjectId)
     });
   });
 
@@ -50,7 +52,8 @@ describe('User model test', () => {
     const token = user.authToken();
     expect(token).toEqual(expect.any(String));
     expect(untokenize(token)).toEqual({
-      email: 'test@martyparty.net'
+      email: 'test@martyparty.net',
+      _id: expect.any(String)
     });
   });
 
