@@ -27,3 +27,4 @@ describe('tokens', () => {
     expect(() => untokenize('12345')).toThrow('Bogus Token');
   });
 });
+
