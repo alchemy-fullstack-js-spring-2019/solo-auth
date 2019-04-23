@@ -54,7 +54,6 @@ describe('User model tests', () => {
     });
     return user.compare('leland')
       .then(result => {
-        console.log('correct pw', result);
         expect(result).toBeTruthy();
       });
   });
@@ -67,7 +66,6 @@ describe('User model tests', () => {
     });
     return user.compare('banana')
       .then(result => {
-        console.log('incorrect pw', result);
         expect(result).toBeFalsy();
       });
   });

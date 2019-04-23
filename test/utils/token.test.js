@@ -21,26 +21,21 @@ describe('tokenize function tests', () => {
 
   it('returns a token', () => {
     const payload = { 
-      payload: {
-        name: 'Ryan Gosling',
-        location: 'Los Angeles'
-      }
+      name: 'Ryan Gosling',
+      location: 'Los Angeles'
     };
     const result = tokenize(payload);
-    const expected = jwt.sign(payload, process.env.AUTH_SECRET, { expiresIn: '24h' });
-    expect(result).toEqual(expected);
+    expect(result).toEqual(expect.any(String));
   });
 
   it('gets the payload from a token', () => {
     const object = { 
-      payload: {
-        name: 'Ryan Gosling',
-        location: 'Los Angeles'
-      }
+      name: 'Ryan Gosling',
+      location: 'Los Angeles'
     };
     const token = tokenize(object);
     const result = untokenize(token);
-    expect(result).toEqual(object.payload);
+    expect(result).toEqual(object);
   });
 
   it('untokenizes a bogus token', () => {

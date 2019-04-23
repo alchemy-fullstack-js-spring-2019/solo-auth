@@ -10,13 +10,14 @@ describe('ensureAuth middleware', () => {
     });
     const req = { token };
     const res = {};
+
     const next = () => {
       expect(req.user).toEqual({
-        email: 'test@test.com'
+        email: 'a@b.com'
       });
       done();
     };
-
+    
     ensureAuth(req, res, next);
   });
 
