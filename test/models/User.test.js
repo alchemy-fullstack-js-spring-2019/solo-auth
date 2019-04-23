@@ -18,4 +18,18 @@ describe('User model', () => {
     const errors = user.validateSync().errors;
     expect(errors.email.message).toEqual('Path `email` is required.');
   });
+
+  it('has a password virtual', () => {
+    const user = new User({
+      email: 'test@test.com',
+      password: 'password'
+    });
+
+    expect(user.toJSON()).toEqual({
+      email: 'test@test.com',
+      _id: expect.any(mongoose.Types.ObjectId)
+    });
+
+    expect(user._tempPassword).toEqual('password');
+  });
 });
