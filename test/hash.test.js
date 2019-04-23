@@ -38,24 +38,4 @@ describe('hash test', () => {
         expect(compareResults).toBeFalsy();
       });
   });
-
-
-  it('compares a password and a hashed password', async() => {
-    const passwordHash = await hash('passowrd1234');
-    const user = new User({
-      email: 'test@gmail.com',
-      passwordHash
-    });
-
-    const result = await user.compare('password1234');
-    expect(result).toBeTruthy();
-  });
-
-  it('can create an authToken', () => {
-    return User.create({
-      email: 'test@test.com',
-      password: 'password'
-    })
-  })
-
 });
