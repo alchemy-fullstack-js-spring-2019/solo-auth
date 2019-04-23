@@ -34,6 +34,8 @@ describe('auth routes', () => {
   });
   
   it('signs in a user', () =>{
+    User.create({ email: 'user@test.com', password: '1234' });
+
     return request(app)
       .post('/auth/signin')
       .send({ email: 'user@test.com', password: '1234' })
@@ -41,7 +43,7 @@ describe('auth routes', () => {
         expect(res.body).toEqual({
           token: expect.any(String),
           user: {
-            email: 'tester',
+            email: 'user@test.com',
             _id: expect.any(String)
           }
         });
