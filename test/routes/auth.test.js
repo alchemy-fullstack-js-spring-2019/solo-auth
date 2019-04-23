@@ -35,6 +35,28 @@ describe('auth routes', () => {
       });
   });
 
+  it('sign up, but email already in user', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'test1235@test.com',
+        password: 'password1234'
+      })
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signup')
+          .send({
+            email: 'test1235@test.com',
+            password: 'password1234'
+          });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          error: 'Email already in use'
+        });
+      });
+  });
+
   it('can sing in a user', () => {
     return User
       .create({ 
