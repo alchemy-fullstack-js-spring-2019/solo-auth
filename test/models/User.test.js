@@ -51,12 +51,12 @@ describe('User model tests', () => {
   it('stores passwordHash in save', () => {
     return User
       .create({
-        email: 'icecreamlov3@hotmail.com',
+        email: '1cecreamlov3@hotmail.com',
         clearPassword: 'i<3IceCream!'
       })
       .then(createdUser => {
         expect(createdUser.toJSON()).toEqual({
-          email: 'icecreamlov3@hotmail.com',
+          email: '1cecreamlov3@hotmail.com',
           _id: expect.any(mongoose.Types.ObjectId)
         });
         // expect(createdUser._tempPassword).toBeFalsy();
@@ -66,7 +66,7 @@ describe('User model tests', () => {
   it('compares password with hash and returns true', () => {
     return User
       .create({
-        email: 'icecreamlov3@hotmail.com',
+        email: 'icecream1ov3@hotmail.com',
         clearPassword: 'i<3IceCream!'
       })
       .then(createdUser => {
@@ -77,9 +77,23 @@ describe('User model tests', () => {
       });
   });
 
-  it('returns a token', () => {
+  it('compares password with hash and returns true', () => {
+    return User
+      .create({
+        email: '1cecream1ov3@hotmail.com',
+        clearPassword: 'i<3IceCream!'
+      })
+      .then(createdUser => {
+        createdUser.compare('iIceCream!')
+          .then(result => {
+            expect(result).toEqual(false);
+          });
+      });
+  });
+
+  it('creates and returns a token', () => {
     const user = new User({
-      email: 'icecreamlov3@hotmail.com',
+      email: 'icecreaml0v3@hotmail.com',
       clearPassword: 'i<3IceCream!'
     });
     expect(user.authToken()).toEqual(expect.any(String));
@@ -87,14 +101,14 @@ describe('User model tests', () => {
 
   it('returns a promise containing the user from a token', () => {
     const user = new User({
-      email: 'icecreamlov3@hotmail.com',
+      email: '1cecreaml0v3@hotmail.com',
       clearPassword: 'i<3IceCream!'
     });
     const token = user.authToken();
     return User.findByToken(token)
       .then(user => {
         expect(user).toEqual({
-          email: 'icecreamlov3@hotmail.com',
+          email: '1cecreaml0v3@hotmail.com',
           _id: expect.any(String),
         });
       });
