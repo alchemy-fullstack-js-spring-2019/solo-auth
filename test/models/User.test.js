@@ -1,5 +1,6 @@
 const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
+const { hash } = require('../../lib/utils/hash');
 
 describe('User model test', () => {
   it('validates a good model', () => {
@@ -19,5 +20,16 @@ describe('User model test', () => {
     });
     expect(user._tempPW).toEqual('securePassword');
   });
+
+  it('has a static method `compare` that compares passwords', async() => {
+    const hashPW = await hash('s3cr3tp@zz');
+    const user = new User({
+      email: 'test@martyparty.net',
+      passwordHash: hashPW
+    });
+    const res = await user.compare('s3cr3tp@zz');
+    expect(res).toBeTruthy();
+  });
+
 
 });
