@@ -57,7 +57,7 @@ describe('User model tests', () => {
       .then(createdUser => {
         expect(createdUser.toJSON()).toEqual({
           email: 'icecreamlov3@hotmail.com',
-          _id: expect.any(mongoose.Types.ObjectId),
+          _id: expect.any(mongoose.Types.ObjectId)
         });
         // expect(createdUser._tempPassword).toBeFalsy();
       });
@@ -83,5 +83,20 @@ describe('User model tests', () => {
       clearPassword: 'i<3IceCream!'
     });
     expect(user.authToken()).toEqual(expect.any(String));
+  });
+
+  it('returns a promise containing the user from a token', () => {
+    const user = new User({
+      email: 'icecreamlov3@hotmail.com',
+      clearPassword: 'i<3IceCream!'
+    });
+    const token = user.authToken();
+    return User.findByToken(token)
+      .then(user => {
+        expect(user).toEqual({
+          email: 'icecreamlov3@hotmail.com',
+          _id: expect.any(String),
+        });
+      });
   });
 });
