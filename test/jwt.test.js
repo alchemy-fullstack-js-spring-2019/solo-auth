@@ -8,7 +8,6 @@ describe('jwt', () => {
        id: '543fds',
       email: 'intro_mode@email.com'
     });
-    console.log(token);
     expect(token).toEqual(expect.any(String));
   });
   it('VERIFIES A TOKEN, in other words, it uses an untokenize function to take a token and return the payload data that was originally given to create that given token', () => {
