@@ -11,4 +11,12 @@ describe('User Model', () => {
       _id: expect.any(mongoose.Types.ObjectId)
     });
   });
+
+  it('stores a _tempPassword', () => {
+    const user = new User({
+      email: 'test@test.com',
+      password: 'iamapassword'
+    });
+    expect(user._tempPassword).toEqual('iamapassword');
+  });
 });
