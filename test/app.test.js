@@ -15,7 +15,7 @@ describe('auth routes', () => {
   afterAll(() => {
     return mongoose.connection.close();
   });
-  
+
   it('signs up a new user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
@@ -31,6 +31,70 @@ describe('auth routes', () => {
             email: 'icecreamlov3@hotmail.com'
           },
           token: expect.any(String)
+        });
+      });
+  });
+
+  it('signs in an existing user', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'icecreamlov3@hotmail.com',
+        password: 'i<3IceCream!',
+        color: 'red'
+      })
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({
+            email: 'icecreamlov3@hotmail.com',
+            password: 'i<3IceCream!',
+          });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'icecreamlov3@hotmail.com'
+          },
+          token: expect.any(String)
+        });
+      });
+  });
+
+  it('errors on bad password', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'icecreamlov3@hotmail.com',
+        password: 'i<3IceCream!',
+        color: 'red'
+      })
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({
+            email: 'icecreamlov3@hotmail.com',
+            password: 'wrongpassword',
+          });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          error: 'Authentication Error'
+        });
+      });
+  });
+
+  it('errors on non-existing user sign in', () => {
+    return request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'icecreamlov3@hotmail.com',
+        password: 'i<3IceCream!',
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          error: 'Authentication Error'
         });
       });
   });
