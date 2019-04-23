@@ -1,5 +1,6 @@
 const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
+const { hash } = require('../../lib/utils/hash');
 
 
 describe('User model', () => {
@@ -34,11 +35,26 @@ describe('User model', () => {
     expect(user._tempPassword).toEqual('secret');
   });
 
-  it('returns true if plain text pw matches hashed pw', () => {
+  it('returns true if plain text pw matches hashed pw', async() => {
+    const passwordHash = await hash('test123');
     const user = new User({
       email: 'megan@megan.com',
-      password: 'alys246'
+      passwordHash: passwordHash
     });
-    expect(user.compare(user.password)).toBeTruthy();
+    const result = await user.compare('test123');
+    expect(result).toBeTruthy();
+  });
+  
+  it('returns false if plain text pw does not match hashed pw', async() => {
+    const password = 'alys246';
+    const hashedPassword = await hash(password);
+    const user = new User({
+      email: 'megan@megan.com',
+      passwordHash: hashedPassword
+    });
+    const result = await user.compare('megan123');
+    
+    expect(result).toBeFalsy();
   });
 });
+
