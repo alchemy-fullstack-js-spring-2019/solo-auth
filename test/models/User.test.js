@@ -47,15 +47,18 @@ describe('User model', () => {
     expect(result).toBeFalsy;
   });
 
-  // it('can create an auth token', () => {
-  //   const user = new User ({
-  //     email: 'emily@emilybemily.com',
-  //     passwordHash: 'cool password'
-  //   });
+  it('can create an auth token', () => {
+    const user = new User ({
+      email: 'emily@emilybemily.com',
+      passwordHash: 'cool password'
+    });
 
-  //   const token = user.authToken();
-  //   const payload = untokenize(token);
+    const token = user.authToken();
+    const payload = untokenize(token);
 
-  //   expect()
-  // })
+    expect(payload).toEqual({ 
+      _id: user._id.toString(),
+      email: 'emily@emilybemily.com'
+    });
+  });
 });
