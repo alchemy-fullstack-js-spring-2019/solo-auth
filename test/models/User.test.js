@@ -1,3 +1,4 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
 const { hash } = require('../../lib/utils/hash');
@@ -61,18 +62,18 @@ describe('User model', () => {
     expect(result).toBeFalsy();
   });
 
-  it('can create an authToken', () => {
-    return User.create({
+  it('can create an authToken withoutDB', () => {
+    const user = new User({
       email: 'test@test.com',
-      password: 'password'
-    })
-      .then(user => {
-        const token = user.authToken();
-        const payload = untokenize(token);
-        expect(payload).toEqual({
-          _id: user._id,
-          email: 'test@test.com'
-        });
-      });
+      passwordHash: 'randomHash'
+    });
+  
+    const token = user.authToken();
+    const payload = untokenize(token);
+    expect(payload).toEqual({
+      _id: user._id.toString(),
+      email: 'test@test.com'
+    });
   });
 });
+
