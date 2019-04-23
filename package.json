@@ -8,6 +8,9 @@
     "test:watch": "npm run test -- --watch",
     "start": "node lib/index.js"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mal23/solo-auth.git"
