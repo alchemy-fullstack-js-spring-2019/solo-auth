@@ -13,10 +13,26 @@ describe('User model tests', () => {
     });      
   });
 
-  it('has a required email field', () => {
+  it('requires email field', () => {
     const user = new User({});
     const errors = user.validateSync().errors;
     expect(errors.email.message).toEqual('Path `email` is required.');
+  });
+
+  it('has a password virtual', () => {
+    const user = new User({
+      email: 'bonnie@the-runs.com',
+      password: 'theruns'
+    });
+
+    expect(user.toJSON()).toEqual({
+      _id: expect.any(mongoose.Types.ObjectId),
+      email: 'bonnie@the-runs.com'
+    });
+
+    expect(user._tempPassword).toEqual('theruns');
+    expect(user.banana()).toEqual('banana');
+    
   });
 
 });
