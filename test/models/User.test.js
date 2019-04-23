@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
 const { hash } = require('../../lib/utils/hash');
+const { untokenize } = require('../../lib/utils/token');
 
 describe('User model', () => {
   it('has an email', () => {
@@ -58,5 +59,20 @@ describe('User model', () => {
 
     const result = await user.compare('badPassword');
     expect(result).toBeFalsy();
+  });
+
+  it('can create an authToken', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => {
+        const token = user.authToken();
+        const payload = untokenize(token);
+        expect(payload).toEqual({
+          _id: user._id,
+          email: 'test@test.com'
+        });
+      });
   });
 });
