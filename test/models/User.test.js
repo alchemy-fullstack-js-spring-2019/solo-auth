@@ -1,5 +1,7 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
+const { untokenize } = require('../../lib/utils/token');
 
 describe('User model tests', () => {
 
@@ -50,7 +52,7 @@ describe('User model tests', () => {
       password: 'leland',
       passwordHash: '$2b$10$ABCDEFGHIABCDEFGHI123uAVZROaIfLowzKSc4PW0gQLe8SwHwNHK'
     });
-    return user.compare(user.password)
+    return user.compare('leland')
       .then(result => {
         console.log('correct pw', result);
         expect(result).toBeTruthy();
@@ -70,7 +72,7 @@ describe('User model tests', () => {
       });
   });
 
-  it('creates a token', () => {
+  it('creates an auth token', () => {
     const user = new User({
       email: 'jkhdgsh@lkjdskgj.com',
       password: 'leland',
@@ -78,6 +80,11 @@ describe('User model tests', () => {
     });
     const token = user.authToken();
     expect(token).toEqual(expect.any(String));
+    const payload = untokenize(token);
+    expect(payload).toEqual({
+      _id: expect.any(String),
+      email: 'jkhdgsh@lkjdskgj.com'
+    });
   });
 
 });
