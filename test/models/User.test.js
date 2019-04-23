@@ -1,4 +1,5 @@
 const User = require('../../lib/models/User');
+const { bcrypt } = require('../../lib/utils/hash');
 
 describe('User tests', () => {
   it('validates good model', () => {
@@ -22,5 +23,15 @@ describe('User tests', () => {
     });
 
     expect(user._tempPassword).toEqual('flanderssucks');
+  });
+
+  it('compares a good pw using a method', () => {
+
+    const user = new User({
+      email: 'email@aol.com',
+      passwordVirtual: 'flanderssucks'
+    });
+
+    expect(user.compare(passwordVirtual)).toBeTruthy();
   });
 });
