@@ -1,7 +1,22 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
 
 describe('User model tests', () => {
+  beforeAll(() => {
+    return mongoose.connect(process.env.MONGODB_URI, () => {
+      console.log('Mongo Connection Started');
+    });
+  });
+
+  beforeEach(() => {
+    return mongoose.connection.dropDatabase();
+  });
+
+  afterAll(() => {
+    return mongoose.connection.close();
+  });
+
   it('creates a user', () => {
     const user = new User({
       email: 'test@email.com'
@@ -31,5 +46,34 @@ describe('User model tests', () => {
       email: 'icecreamlov3@hotmail.com'
     });
     expect(user._tempPassword).toEqual('i<3IceCream!');
+  });
+
+  it('stores passwordHash in save', () => {
+    return User
+      .create({
+        email: 'icecreamlov3@hotmail.com',
+        clearPassword: 'i<3IceCream!'
+      })
+      .then(createdUser => {
+        expect(createdUser.toJSON()).toEqual({
+          email: 'icecreamlov3@hotmail.com',
+          _id: expect.any(mongoose.Types.ObjectId),
+        });
+        // expect(createdUser._tempPassword).toBeFalsy();
+      });
+  });
+
+  it('compares password with hash and returns true', () => {
+    return User
+      .create({
+        email: 'icecreamlov3@hotmail.com',
+        clearPassword: 'i<3IceCream!'
+      })
+      .then(createdUser => {
+        createdUser.compare('i<3IceCream!')
+          .then(result => {
+            expect(result).toEqual(true);
+          });
+      });
   });
 });
