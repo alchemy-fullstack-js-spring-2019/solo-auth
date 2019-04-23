@@ -1,4 +1,5 @@
-const ensureAuth = require('../../lib/middleware/ensureAuth');
+require('dotenv').config();
+const { ensureAuth } = require('../../lib/middleware/ensureAuth');
 const { tokenize } = require('../../lib/utils/token');
 
 describe('ensureAuth middleware tests', () => {
