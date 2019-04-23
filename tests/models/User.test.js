@@ -2,8 +2,13 @@ const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
 const hash = require('../../lib/utils/hash');
 const compare = require('../../lib/utils/compare');
+const { tokenize, untokenize } = require('../../lib/utils/token');
 
 describe('User model', () => {
+    beforeAll(() => {
+        
+    });
+
     it('validates a good model', () => {
         const user = new User({ email: 'test@test.com' });
         expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(mongoose.Types.ObjectId) });
@@ -27,6 +32,41 @@ describe('User model', () => {
                     });
             });
     
+        
+    });
 
+    it('tests methods and statics', () => {
+        const user = new User({ email: 'test@test.com', password: 'pw123' });
+
+        expect(user.banana('n')).toEqual('bananan');
+        expect(User.apple()).toEqual('apple');
+    });
+
+    it('compares', () => {
+        const user = new User({ email: 'test@test.com', password: 'pw123' });
+        user.compare('pw123')
+            .then(res => {
+                expect(res).toBeTruthy;
+            });
+    });
+
+    it('ryans compare', async() => {
+        const passwordHash = await hash('password1234');
+        const user = new User({
+            email: 'test@test.com',
+            passwordHash
+        });
+
+        const result = await user.compare('password1234');
+        expect(result).toBeTruthy;
+    });
+
+    it('authToken', async() => {
+        const user = new User({ email: 'test@test.com', password: 'pw123' });
+        const returnedToken = await user.authToken();
+        const untokenized = await untokenize(returnedToken);
+
+        expect(untokenized).toEqual({ email: 'test@test.com', _id: expect.any(String) });
     });
 });
+
