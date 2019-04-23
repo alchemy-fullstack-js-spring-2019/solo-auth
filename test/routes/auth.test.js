@@ -11,11 +11,14 @@ describe('auth routes', () => {
         password: 'pwpwpw123'
       })
       .then(res => {
-        expect(res).toEqual({ 
-          email: 'cara@email.com', password: 'pwpwpw123' }, 
-        expect.any(String) 
-        );
+        expect(res.body).toEqual({ 
+          user: 
+      { email: 'cara@email.com', _id: expect.any(String) }, 
+          token: expect.any(String)
+        });
       });
   });
+
+  
 });
 
