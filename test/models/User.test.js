@@ -25,5 +25,12 @@ describe('user', () => {
     //we temporarily store the clear password here by adding a virtual to your User Schema 
     expect(user._tempPassword).toEqual('youllneverguess')
   });
+  it('uses the compare method to check if the hash password and clear password match', () => {
+    const user = new User({
+      email: 'intro_mode@email.com',
+      clearPassword: 'muahahah'
+    });
 
+    expect(user.compare(user._tempPassword, user.passwordHash)).toBeTruthy();
+  });
 });
