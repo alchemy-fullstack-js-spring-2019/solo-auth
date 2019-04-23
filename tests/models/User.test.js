@@ -69,5 +69,12 @@ describe('User model', () => {
 
         expect(untokenized).toEqual({ email: 'test@test.com', _id: user._id.toString() });
     });
+
+    it('findByToken', async() => {
+        User.create({ email: 'test@test.com', password: 'pw123' });
+        const token = await tokenize({ email: 'test@test.com', password: 'pw123' });
+        const result = await User.findByToken(token);
+        expect(result).toEqual({ email: 'test@test.com', password: 'pw123' });
+    });
 });
 
