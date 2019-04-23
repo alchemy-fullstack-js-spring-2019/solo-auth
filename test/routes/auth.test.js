@@ -35,4 +35,29 @@ describe('auth routes', () => {
         token: expect.any(String) });
       });
   });
+  
+  it('can sign in a user', () => {
+    return User.create({
+      email: 'megan@megan.com',
+      password: 'xxxxx'
+    })
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({
+            email: 'megan@megan.com',
+            password: 'xxxxx'
+          });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'megan@megan.com',
+            __v: 0,
+            passwordHash: expect.any(String)
+          },
+          token: expect.any(String) });
+      });
+  });
 });
