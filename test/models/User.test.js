@@ -11,4 +11,16 @@ describe('User model', () => {
       _id: expect.any(mongoose.Types.ObjectId)
     });
   });
+
+  it('has a virtual password', () => {
+    const user = new User({
+      email: 'emily@emilybemily.com',
+      password: 'password123'
+    });
+    expect(user.toJSON()).toEqual({
+      email: 'emily@emilybemily.com',
+      _id: expect.any(mongoose.Types.ObjectId)
+    });
+    expect(user._tempPassword).toEqual('password123');
+  });
 });
