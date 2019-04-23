@@ -74,4 +74,18 @@ describe('User model', () => {
         expect(result).toBeFalsy();
       });
   });
+  it('can create an auth token', () => {
+    return User.create({
+      email: 'name@email.com',
+      password: 'password1234'
+    })
+      .then(user => {
+        const token = user.authToken();
+        const payload = untokenize(token);
+        expect(payload).toEqual({
+          _id: user._id.toString(),
+          email: 'name@email.com'
+        });
+      });
+  });
 });
