@@ -1,5 +1,5 @@
-const User = require('../../lib/models/User');
 const mongoose = require('mongoose');
+const User = require('../../lib/models/User');
 
 describe('User model tests', () => {
   it('creates a user', () => {
@@ -7,8 +7,8 @@ describe('User model tests', () => {
       email: 'test@email.com'
     });
     expect(user.toJSON()).toEqual({
-      email: 'test@email.com',
-      _id: expect.any(mongoose.Types.ObjectId)
+      _id: expect.any(mongoose.Types.ObjectId),
+      email: 'test@email.com'
     });
   });
 
@@ -23,9 +23,13 @@ describe('User model tests', () => {
   it('stores a _tempPassword', () => {
     const user = new User({
       email: 'icecreamlov3@hotmail.com',
-      password: 'i<3IceCream!'
+      clearPassword: 'i<3IceCream!'
     });
 
+    expect(user.toJSON()).toEqual({
+      _id: expect.any(mongoose.Types.ObjectId),
+      email: 'icecreamlov3@hotmail.com'
+    });
     expect(user._tempPassword).toEqual('i<3IceCream!');
   });
 });
