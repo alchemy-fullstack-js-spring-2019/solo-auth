@@ -36,12 +36,12 @@ describe('User model', () => {
         
     });
 
-    it('tests methods and statics', () => {
-        const user = new User({ email: 'test@test.com', password: 'pw123' });
+    // it('tests methods and statics', () => {
+    //     const user = new User({ email: 'test@test.com', password: 'pw123' });
 
-        expect(user.banana('n')).toEqual('bananan');
-        expect(User.apple()).toEqual('apple');
-    });
+    //     expect(user.banana('n')).toEqual('bananan');
+    //     expect(User.apple()).toEqual('apple');
+    // });
 
     it('compares', () => {
         const user = new User({ email: 'test@test.com', password: 'pw123' });
