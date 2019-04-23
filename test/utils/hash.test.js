@@ -4,26 +4,22 @@ const { hash, compare } = require('../../lib/utils/hash');
 // with a hashed password.
 
 describe('hash function', () => {
-  const password = 'mypass7890';
+  const password = 'password';
   it('hashes a password', () => {
     return hash(password)
-      .then(hashedPwd => {
-        expect(hashedPwd).toEqual(expect.any(String));
-        expect(hashedPwd).not.toEqual('password');
+      .then(hashedPassword => {
+        expect(hashedPassword).toEqual(expect.any(String));
+        expect(hashedPassword).not.toEqual(password);
       });
   });
 
-});
-
-describe('compare function', () => {
-  const password = 'password';
   it('returns true if the password matches the hash', () => {
     return hash(password)
       .then(hashedPassword => {
         return compare('password', hashedPassword);
       })
       .then(compareResult => {
-        expect(compareResult).toBeTruthy;
+        expect(compareResult).toBeTruthy();
       });
   });
 });
