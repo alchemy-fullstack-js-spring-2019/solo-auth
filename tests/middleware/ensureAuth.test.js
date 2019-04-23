@@ -4,14 +4,14 @@ const { ensureAuth, findAuthToken } = require('../../lib/middleware/ensureAuth')
 
 describe('ensure auth middleware', () => {
     it('findAuthToken', done => {
-        const req = { Authorization: 'Bearer tokenfjdjkafjdkslfj' };
+        const req = { get: () => 'Bearer tokenfjdjkafjdkslfj' };
         const res = {};
         const next = () => {
-            expect(req.token).toEqual('Bearer tokenfjdjkafjdkslfj');
+            expect(req.token).toEqual('tokenfjdjkafjdkslfj');
             done();
         };
 
-        findAuthToken(res, req, next);
+        findAuthToken(req, res, next);
     });
     
     it('validates a good token', done => {
