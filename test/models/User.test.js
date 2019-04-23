@@ -21,7 +21,7 @@ describe('User model test', () => {
     expect(user._tempPW).toEqual('securePassword');
   });
 
-  it('has a static method `compare` that compares passwords', async() => {
+  it('has a instance method `compare` that compares passwords', async() => {
     const hashPW = await hash('s3cr3tp@zz');
     const user = new User({
       email: 'test@martyparty.net',
@@ -31,5 +31,16 @@ describe('User model test', () => {
     expect(res).toBeTruthy();
   });
 
+  it('has an authToken instance method', async() => {
+    const hashPW = await hash('s3cr3tp@zz');
+    const user = new User({
+      email: 'test@martyparty.net',
+      passwordHash: hashPW
+    });
+
+    const token = user.authToken();
+    expect(token).toEqual('');
+
+  });
 
 });
