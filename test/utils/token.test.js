@@ -21,9 +21,9 @@ describe('token tests', () => {
       }
     });
 
-    const payload = untokenize(token);
+    const result = untokenize(token);
 
-    expect(payload).toEqual({
+    expect(result.payload).toEqual({
       _id: '1234',
       email: 'cosmo@cosmo.com'
     });
