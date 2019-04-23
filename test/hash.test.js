@@ -1,7 +1,13 @@
 require('dotenv').config();
 const { hash, compare } = require('../lib/utils/hash');
+const User = require('../lib/models/User');
+const mongoose = require('mongoose');
 
 describe('hash test', () => {
+  // beforeAll(() => {
+  //     return mongoose.connect('mongodb://localhost')
+  // })
+
   it('takes a string and returns a promise that resolves with a hashed password', () => {
     const password = 'password1234';
     return hash(password)
@@ -32,4 +38,24 @@ describe('hash test', () => {
         expect(compareResults).toBeFalsy();
       });
   });
+
+
+  it('compares a password and a hashed password', async() => {
+    const passwordHash = await hash('passowrd1234');
+    const user = new User({
+      email: 'test@gmail.com',
+      passwordHash
+    });
+
+    const result = await user.compare('password1234');
+    expect(result).toBeTruthy();
+  });
+
+  it('can create an authToken', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+  })
+
 });
