@@ -22,6 +22,8 @@ describe('models', () => {
       password: 'password'
     });
     expect(user._tempPassword).toEqual('password');
+    expect(user.banana()).toEqual('banana');
+    expect(User.cheese()).toEqual('cheese');
   });
 
 
