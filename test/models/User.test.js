@@ -58,12 +58,12 @@ describe('user auth', () => {
   });
 
   it('can create an auth token', () => {
-    User.create({ email: 'blah', password: 'password' })
+    return User.create({ email: 'blah', password: 'password' })
       .then(user => {
         const token = user.authToken();
         const payload = untokenizer(token);
         expect(payload).toEqual({
-          _id: user._id,
+          _id: user._id.toString(),
           email: 'blah'
         });
       });
@@ -72,14 +72,14 @@ describe('user auth', () => {
   it('finds a token', () => {
     return User.create({ email: 'more@lies.com', password: 'password' })
       .then(payload => { 
-        tokenizer(payload);
+        return tokenizer(payload);
       })
       .then(token => {
-        User.findByToken(token);
+        return User.findByToken(token);
       })
       .then(foundUser => {
         console.log('founduser', foundUser);
-        expect(foundUser).toEqual({ email: 'more@lies.com', _id: expect.any(mongoose.Types.ObjectId) });
+        expect(foundUser).toEqual({ email: 'more@lies.com', _id: expect.any(String) });
       });
   });
 });
