@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 const connect = require('../../lib/utils/connect');
 const app = require('../../lib/app');
-// const User = require('../../lib/models/User');
+const User = require('../../lib/models/User');
 
 describe('auth routes', () => {
   beforeAll(() => {
@@ -34,5 +34,30 @@ describe('auth routes', () => {
           token: expect.any(String)
         });
       });
+  });
+
+  it('signin a user', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(() => {
+        return request(app)
+          .post('/api/v1/auth/signin')
+          .send({
+            email: 'test@test.com',
+            password: 'password'
+          });
+      })
+      .then(res => {
+        expect(res.body).toEqual({
+          user: {
+            _id: expect.any(String),
+            email: 'test@test.com'
+          },
+          token: expect.any(String)
+        });
+      });
+
   });
 });
