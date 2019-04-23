@@ -81,4 +81,33 @@ describe('User tests', () => {
         expect(result).toBeFalsy();
       });
   });
+
+  it('creates an authToken', () => {
+    return User.create({
+      email: 'test@test.com',
+      password: 'password'
+    })
+      .then(user => {
+        const token = user.authToken();
+        const payload = untokenize(token);
+        expect(payload).toEqual({
+          _id: user._id.toString(),
+          email: 'test@test.com'
+        });
+      });
+  });
+
+  it('creates a authToken withDB', () => {
+    const user = new User({
+      email: 'test@test.com',
+      passwordHash: 'hashedPassword'
+    });
+    
+    const token = user.authToken();
+    const payload = untokenize(token);
+    expect(payload).toEqual({
+      _id: user._id.toString(),
+      email: 'test@test.com'
+    });
+  });
 });
