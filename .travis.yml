@@ -1,5 +1,7 @@
-language: node_js
-node_js:
- - “node”
-services: mongodb
-env: AUTH_SECRET=secret
+language: "node_js"
+node_js: "11"
+before_script:
+  - npm i eslint esm
+  - npm i jsdom
+script:
+  - npx eslint .
