@@ -5,7 +5,7 @@ require('../data-helper');
 describe('auth routes', () => {
   it.only('creates a new user on signup and returns user and token', () => {
     return request(app)
-      .post('/signup')
+      .post('/auth/signup')
       .send({
         email: 'cara@email.com',
         password: 'pwpwpw123'
