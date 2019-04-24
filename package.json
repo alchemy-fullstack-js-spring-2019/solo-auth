@@ -1,0 +1,36 @@
+{
+  "name": "solo-auth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SteelFace87/solo-auth.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SteelFace87/solo-auth/issues"
+  },
+  "homepage": "https://github.com/SteelFace87/solo-auth#readme",
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "jest": "^24.7.1",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "mongoose": "^5.5.3",
+    "morgan": "^1.9.1",
+    "supertest": "^4.0.2"
+  }
+}
