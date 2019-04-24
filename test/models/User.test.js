@@ -4,6 +4,45 @@ const User = require('../../lib/models/User');
 const { untokenize } = require('../../lib/utils/token');
 
 describe('User model', () => {
+  // beforeAll(() => {
+  //   return mongoose.connect('mongodb://localhost27017/auth', {
+  //     useCreateIndex: true,
+  //     useFindAndModify: false,
+  //     useNewUrlParser: true
+  //   });
+  // });
+
+  // beforeEach(() => {
+  //   return mongoose.connection.dropDatabase();
+  // });
+
+  // afterAll(() => {
+  //   return mongoose.connection.close();
+  // });
+
+  it('has an email', () => {
+    const user = new User({
+      email: 'testing@test.com'
+    });
+
+    expect(user.toJSON()).toEqual({
+      _id: expect.any(mongoose.Types.ObjectId),
+      email: 'testing@test.com'
+    });
+  });
+
+  it('adds a username', () => {
+    const user = new User({
+      email: 'testing@test.com',
+      passwordHash: '1234'
+    });
+
+    expect(user.toJSON()).toEqual({
+      _id: expect.any(mongoose.Types.ObjectId),
+      email: 'testing@test.com'
+    });
+  });
+  
   it('validates a good model', () => {
     const user = new User({
       name: 'emily',
@@ -47,6 +86,35 @@ describe('User model', () => {
       })
       .then(result => {
         expect(result).toBeTruthy();
+      });
+    });
+
+    it('can create an authToken', () => {
+      return User.create({
+        email: 'testing@test.com',
+        password: 'coolPassword'
+      })
+      .then(user => {
+        const token = user.authToken();
+        const payload = untokenize(token);
+        expect(payload).toEqual({
+          _id: user._id.toString(),
+          email: 'testing@test.com'
+        });
+      });
+    });
+
+    it('can create an authToken withDB', () => {
+      const user = new User({
+        email: 'testing@test.com',
+        passwordHash: 'randomHash'
+      });
+
+      const token = user.authToken();
+      const payload = untokenize(token);
+      expect(payload).toEqual({
+        _id: user._id.toString(),
+        email: 'testing@test.com'
       });
     });
 });
