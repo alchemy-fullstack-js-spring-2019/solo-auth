@@ -38,7 +38,7 @@ describe('routes tests', () => {
   });
 
   it('can sign in a user', () => {
-    User.create({
+    return User.create({
       email: 'test@email.com',
       password: '123butts'
     })
@@ -46,10 +46,8 @@ describe('routes tests', () => {
         return request(app)
           .post('/api/v1/auth/signin')
           .send({
-            user: {
-              email: 'test@email.com',
-              password: '123butts' 
-            }
+            email: 'test@email.com',
+            password: '123butts' 
           })
           .then(res => {
             expect(res.body).toEqual({
@@ -63,25 +61,21 @@ describe('routes tests', () => {
   });
 
   it('verifies a user', () => {
-    User.create({
-      email: 'test@email.com',
-      password: '123butts'
-    })
-      .then(() => {
-        return request(app)
-          .post('/api/v1/auth/signin')
-          .send({
-            user: {
-              email: 'test@email.com',
-              password: '123butts' 
-            }
-          })
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'test@yourmom.com',
+        password: 'chunkymutha'
+      })
+      .then(res => {
+        console.log('test token', res.body.token);
+        return request(app) 
+          .get('/api/v1/auth/verify')
+          .set('Authorization', `Bearer ${res.body.token}`)
           .then(res => {
             expect(res.body).toEqual({
-              user: {
-                _id: expect.any(String),
-                email: 'test@email.com'
-              }, token: expect.any(String)
+              _id: expect.any(String),
+              email: 'test@yourmom.com'
             });
           });
       });
