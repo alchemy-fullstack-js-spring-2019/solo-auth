@@ -1,6 +1,5 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-// const { untokenize } = require('../../lib/utils/token');
 const User = require('../../lib/models/User');
 
 describe('User model', () => {

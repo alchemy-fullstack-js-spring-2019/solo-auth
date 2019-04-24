@@ -1,5 +1,4 @@
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
 const { tokenize, untokenize } = require('../../lib/utils/token');
 
 
@@ -27,8 +26,8 @@ describe('tokenize', () => {
     });
   
   });
-//   it('can untokenize a BOGUS token', () => {
-//     expect(() => untokenize('4567')).toThrow('it\'s bogus dude!');
-//   });
+  it('can untokenize a BOGUS token', () => {
+    expect(() => untokenize('4567')).toThrow('it\'s bogus dude!');
+  });
 
 });
