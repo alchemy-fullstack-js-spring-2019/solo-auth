@@ -59,7 +59,9 @@ describe('auth routes', () => {
           .get('/auth/verify')
           .set('Authorization', created.body.token)
           .then(res => {
-            expect(res.body).toEqual({ _id: expect.any(String), email: 'tester' });
+            expect(res.body).toEqual({
+              _id: expect.any(String),
+              email: 'tester' });
           });
       });
   });
