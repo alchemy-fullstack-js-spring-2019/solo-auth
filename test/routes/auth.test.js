@@ -1,3 +1,4 @@
+require('dotenv').config();
 require('../data-helpers');
 const request = require('supertest');
 const app = require('../../lib/app');
