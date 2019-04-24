@@ -8,7 +8,7 @@
     "test": "test"
   },
   "jest": {
-    "testEnvironment": "Node"
+    "testEnvironment": "node"
   },
   "scripts": {
     "test": "jest --verbose",
