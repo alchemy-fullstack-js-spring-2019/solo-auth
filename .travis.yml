@@ -3,3 +3,5 @@ node_js:
   - "node"
 services: mongodb
 env: AUTH_SECRET=secretWord
+env:
+ - MONGODB_URI=mongodb://localhost:27017/soloAuth
