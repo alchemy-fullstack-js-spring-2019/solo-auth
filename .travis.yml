@@ -5,5 +5,3 @@ before_script:
   - npm i jsdom
 script:
   - npx eslint .
- services: mongodb
- env: AUTH_SECRET=secret
