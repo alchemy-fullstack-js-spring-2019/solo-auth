@@ -1,0 +1,5 @@
+language: node_js
+node_js:
+  - "node"
+services: mongodb
+env: AUTH_SECRET=MY_SECRET_TOKEN MONGODB_URI=mongodb://localhost:27017/solo-auth
