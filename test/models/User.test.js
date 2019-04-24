@@ -1,8 +1,14 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
-
+const { untokenize } = require('../../lib/utils/token');
 const User = require('../../lib/models/User');
 
 describe('User model', () => {
+  beforeAll(() => {
+    return mongoose.connect('MONGODB_URI=mongodb://localhost:27017/auth',useCreateIndex: true,
+    useFindAndModify: false,
+    use )
+  });
   it('has an email address', () => {
     const user = new User({
       email: 'email@email.com'
