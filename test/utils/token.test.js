@@ -16,7 +16,7 @@ describe('jwt token', () => {
       name: 'spot',
       age: 3
     });
-    const obj = jwt.verify(token, process.env.AUTH_SECRET);
+    const obj = jwt.verify(token, 's3cret'); // was: process.env.AUTH_SECRET
     expect(obj.payload).toEqual({
       name: 'spot',
       age: 3

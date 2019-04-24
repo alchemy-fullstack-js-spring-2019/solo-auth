@@ -2,7 +2,8 @@ require('dotenv');
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
 const { hash } = require('../../lib/utils/hash');
-// const { untokenize } = require('../../lib/utils/token');
+//const connect = require('../../lib/utils/connect')
+const { untokenize } = require('../../lib/utils/token');
 
 // create a test it('validates a good model', () => { }
 // create a new user with const user = new User({ email: 'test@test.com' });
@@ -10,6 +11,7 @@ const { hash } = require('../../lib/utils/hash');
 
 describe('User model tests', () => {
   beforeAll(() => {
+    //connect();
     return mongoose.connect('mongodb://localhost:27017/auth');
   });
 
@@ -41,6 +43,29 @@ describe('User model tests', () => {
     const result = await user.compare('password111');
     expect(result).toBeTruthy();
   });
+
+  // it('can create an authToken', async() => {
+  //   const user = new User({
+  //     email: 'jkfjf@stuff.com',
+  //     password: 'password'
+  //   });
+  //   const result = await user.authToken();
+  //   const payload = untokenize(result);
+  //   expect(payload.authToken).toEqual(expect.any(String))
+  //   //expect(user.authToken()).toEqual(expect.any(String));
+  //   //   return User.create({
+
+  //   // })
+  //     .then(user => {
+  //       const token = user.authToken();
+  //       const payload = untokenize(token); //portin
+  //       expect(payload).toEqual({
+  //         _id: user._id.toString(),
+  //         email: 'jkfjf@stuff.com'//,
+
+  //       });
+  //     });
+  // });
 
   // it('can create an authToken', () => {
   //   return User.create({
