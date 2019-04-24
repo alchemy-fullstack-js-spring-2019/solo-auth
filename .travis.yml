@@ -1,4 +1,4 @@
 language: node_js
-node_js: - "current"
+node_js: "current"
 services: mongodb
 env: AUTH_SECRET=s3cret MONGODB_URI=mongodb://localhost:27017/auth
