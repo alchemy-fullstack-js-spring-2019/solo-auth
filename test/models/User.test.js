@@ -2,13 +2,25 @@ require('dotenv');
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
 const { hash } = require('../../lib/utils/hash');
-const { untokenize } = require('../../lib/utils/token');
+// const { untokenize } = require('../../lib/utils/token');
 
 // create a test it('validates a good model', () => { }
 // create a new user with const user = new User({ email: 'test@test.com' });
 // expect(user.toJSON()).toEqual({ email: 'test@test.com' })
 
 describe('User model tests', () => {
+  beforeAll(() => {
+    return mongoose.connect('mongodb://localhost:27017/auth');
+  });
+
+  beforeEach(() => {
+    return mongoose.connection.dropDatabase();
+  });
+
+  afterAll(() => {
+    return mongoose.connection.close();
+  });
+
   it('validates a good model', () => {
     const user = new User({ email: 'test@test.com', });
     expect(user.toJSON()).toEqual({ email: 'test@test.com', _id: expect.any(mongoose.Types.ObjectId) });//expect.anything() });
@@ -19,7 +31,7 @@ describe('User model tests', () => {
     expect(user._tempPassword).toEqual('password');
   });
 
-  // it.skip(..) skips a test
+  // it.skip(..) // skips a test
   it('can compare a tokenized password', async() => { //async
     const passwordHash = await hash('password111');
     const user = new User({
