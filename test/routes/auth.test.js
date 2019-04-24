@@ -55,7 +55,6 @@ describe('auth routes', () => {
       .post('/auth/signup')
       .send({ email: 'tester', password: '1234' })
       .then(created => {
-        console.log(created.body.token);
         return request(app)
           .get('/auth/verify')
           .set('Authorization', created.body.token)
