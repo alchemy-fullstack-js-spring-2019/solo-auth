@@ -4,8 +4,6 @@ const app = require('../lib/app');
 const mongoose = require('mongoose');
 const connect = require('../lib/utils/connect');
 const User = require('../lib/models/User');
-const jwt = require('jsonwebtoken');
-const { tokenize } = require('../lib/utils/token');
 
 describe('auth routes', () => {
     beforeAll(() => {
