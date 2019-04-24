@@ -15,9 +15,9 @@ describe.skip('AUTH ROUTES', () => {
     mongoose.connection.dropDatabase();
   });
 
-  // afterAll(() => {
-  //   return mongoose.connection.close();
-  // });
+  afterAll(() => {
+    return mongoose.connection.close();
+  });
   it.skip('sign up new user', () => {
     return request(app)
       .post('/api/v1/auth/signup')
