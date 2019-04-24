@@ -58,7 +58,6 @@ describe('User model test', () => {
     const token = user.authToken();
 
     const payload = untokenize(token);
-    console.log('TEST PAYLOAD', payload);
 
     expect(payload).toEqual({
       email: 'test@test.com',

@@ -92,4 +92,24 @@ describe('auth routes', () => {
       });
   });
 
+  it('verifies token', () => {
+    return request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'test5@test.com',
+        password: 'password4567'
+      })
+      .then(res => {
+        return request(app)
+          .get('/api/v1/auth/verify')
+          .set('Authorization', `Bearer ${res.body.token}`)
+          .then(result => {
+            console.log(result.body);
+            expect(result.body).toEqual({
+              email: 'test5@test.com',
+              _id: expect.any(String)
+            });
+          });
+      });
+  });
 });

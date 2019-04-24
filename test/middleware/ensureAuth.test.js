@@ -8,7 +8,9 @@ describe('ensureAuth middleware tests', () => {
     const req = {
       token
     };
+
     const res = {};
+    
     const next = () => {
       expect(req.user).toEqual({
         email: 'test@test.com'
