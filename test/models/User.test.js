@@ -1,14 +1,24 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const { untokenize } = require('../../lib/utils/token');
+// const { untokenize } = require('../../lib/utils/token');
 const User = require('../../lib/models/User');
 
 describe('User model', () => {
-  beforeAll(() => {
-    return mongoose.connect('MONGODB_URI=mongodb://localhost:27017/auth',useCreateIndex: true,
-    useFindAndModify: false,
-    use )
+  beforeAll(() =>{
+    return mongoose.connect('mongodb://localhost:27017/auth', {
+      useCreateIndex: true,
+      useFindAndModify: true,
+      useNewUrlParser: true
+    });
   });
+  beforeEach(() => {
+    return mongoose.connection.dropDatabase();
+  });
+
+  afterAll(() => {
+    return mongoose.connection.close();
+  });
+
   it('has an email address', () => {
     const user = new User({
       email: 'email@email.com'
@@ -34,9 +44,10 @@ describe('User model', () => {
     expect(user.toJSON()).toEqual({
       _id: expect.any(mongoose.Types.ObjectId),
       email: 'email@email.com'
-
-
     });
+  });
+  it('can compare a good password', () =>{
+
   });
 });
 
