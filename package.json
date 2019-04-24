@@ -11,7 +11,7 @@
     "testEnvironment": "node"
   },
   "scripts": {
-    "test": "jest --verbose",
+    "test": "jest --verbose --runInBand",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {
