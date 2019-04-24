@@ -3,4 +3,5 @@ node_js:
   - "node"
 services: mongodb
 env: AUTH_SECRET=secret
-env: - MONGODB_URI=mongodb://localhost:27017/auth
+env: 
+- MONGODB_URI=mongodb://localhost:27017/auth
