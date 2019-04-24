@@ -36,7 +36,7 @@ describe('User Test', () => {
   it('stores a _tempPassword', () => {
     const user = new User({ 
       email: 'test@test.com',
-      password1: '1234'
+      password: '1234'
     });
     expect(user._tempPassword).toEqual('1234');
   });
@@ -52,10 +52,9 @@ describe('User Test', () => {
   it('compare passwords', () => {
     return User.create({
       email: 'test@gmail.com',
-      password1: 'password'
+      password: 'password'
     })
       .then(user => {
-        console.log('****', user);
         return user.compare('password');
       })
       .then(result => {
@@ -76,7 +75,7 @@ describe('User Test', () => {
   it('can create a authToken', () => {
     return User.create({
       email: 'test@test.com',
-      password1: 'password'
+      password: 'password'
     })
       .then(user => {
         const token = user.authToken();
