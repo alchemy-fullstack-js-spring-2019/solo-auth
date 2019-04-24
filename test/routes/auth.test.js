@@ -39,4 +39,29 @@ describe('auth route', () => {
             });
 
     });
+    it('can sign in', () => {
+        return request(app)
+            .post('/api/v1/auth/signup')
+            .send({
+                email:'email@email.com',
+                password: '123'
+            })
+            .then(()=>{
+                return request(app)
+                    .post('/api/v1/auth/signin')
+                    .send({
+                        email:'email@email.com',
+                        password: '123'
+                    })
+                    .then(signedUpUser => {
+                        expect(signedUpUser.body).toEqual({
+                            user:{
+                                email:'email@email.com',
+                                _id:expect.any(String)    
+                            },  
+                            token:expect.any(String)
+                        });
+                    });
+            });   
+    });
 });
