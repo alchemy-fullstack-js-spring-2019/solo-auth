@@ -28,9 +28,7 @@ describe('auth routes', () => {
       .then(res => {
         expect(res.body).toEqual({ user: {
           _id: expect.any(String),
-          email: 'megan@megan.com',
-          __v: 0,
-          passwordHash: expect.any(String)
+          email: 'megan@megan.com'
         },
         token: expect.any(String) });
       });
@@ -53,9 +51,7 @@ describe('auth routes', () => {
         expect(res.body).toEqual({
           user: {
             _id: expect.any(String),
-            email: 'megan@megan.com',
-            __v: 0,
-            passwordHash: expect.any(String)
+            email: 'megan@megan.com'
           },
           token: expect.any(String) });
       });
