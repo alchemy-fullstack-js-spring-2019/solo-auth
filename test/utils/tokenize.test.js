@@ -26,8 +26,4 @@ describe('tokenize', () => {
     });
   
   });
-  it('can untokenize a BOGUS token', () => {
-    expect(() => untokenize('4567')).toThrow('it\'s bogus dude!');
-  });
-
 });
