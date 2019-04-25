@@ -26,7 +26,7 @@ describe('user', () => {
     //we temporarily store the clear password here by adding a virtual to your User Schema 
     expect(user._tempPassword).toEqual('youllneverguess')
   });
-  it.only('uses the compare method to check if the hash password and clear password match', async () => {
+  it('uses the compare method to check if the hash password and clear password match', async () => {
     const hashedPwd = await hashFn('muahahah')
     // faked hashed here because we arent saving to db? so it doesnt get hashed?
     //if we were to use .create then it would store in the db and would hash

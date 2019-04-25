@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const { hashFn, compare } = require('../lib/utils/hash.js');
 
 describe('hashing', () => {

@@ -5,7 +5,7 @@ const { ensureAuth } = require('../../lib/middleware/ensureAuth.js');
 
 
 describe('ensureAuth middlware', () => {
-  it.only('validates a good token', done => {
+  it('validates a good token', done => {
     const token = tokenize({
       email: 'test@test.com'
     });
@@ -15,7 +15,6 @@ describe('ensureAuth middlware', () => {
     };
     const res = {};
     const next = () => {
-      console.log(req.user)
       expect(req.user).toEqual({
         email: 'test@test.com'
       });
