@@ -11,7 +11,7 @@ describe('hashing', () => {
   });
   it('hashes a password twice, the first hashed password and second hashed password arent equal, showing that each hash round changes the password', () => {
     const password = 'hackme';
-    hashFn(password)
+    return hashFn(password)
       .then(hashedPwd => {
         return Promise.all([
           Promise.resolve(hashedPwd),
@@ -24,9 +24,9 @@ describe('hashing', () => {
   });
   it('compares a string password and its hashed version and returns true since they are the same', () => {
     const password = 'hackme';
-    hashFn(password)
+    return hashFn(password)
       .then(hashedPwd => {
-        compare('hackme', hashedPwd)
+        return compare('hackme', hashedPwd)
         .then(boolean => {
           expect(boolean).toBeTruthy;
         });

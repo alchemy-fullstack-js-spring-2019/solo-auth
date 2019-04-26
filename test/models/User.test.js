@@ -30,6 +30,7 @@ describe('user', () => {
     const hashedPwd = await hashFn('muahahah')
     // faked hashed here because we arent saving to db? so it doesnt get hashed?
     //if we were to use .create then it would store in the db and would hash
+    //and if we were to use .create we would need to connect to mongodb with beforeAll etc
     const user = new User({
       email: 'intro_mode@email.com',
       passwordHash: hashedPwd
@@ -42,7 +43,6 @@ describe('user', () => {
     const user = new User({
       email: 'intro_mode@email.com',
     });
-    console.log(user.authToken());
     expect(user.authToken()).toEqual(expect.any(String));
   });
 });

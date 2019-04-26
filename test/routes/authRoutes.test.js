@@ -1,8 +1,8 @@
 require('dotenv').config();
+const connect = require('../../lib/utils/connect.js');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../../lib/app.js');
-const connect = require('../../lib/utils/connect.js');
 const User = require('../../lib/models/User.js');
 
 describe('crud for testing a user\'s authentication', () => {

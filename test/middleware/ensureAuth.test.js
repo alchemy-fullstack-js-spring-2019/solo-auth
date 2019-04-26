@@ -24,3 +24,4 @@ describe('ensureAuth middlware', () => {
     ensureAuth(req, res, next);
   });
 });
+
