@@ -1,26 +1,26 @@
-require('dotenv').config();
+const { hash } = require('../../lib/utils/hash');
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
 const { untokenize } = require('../../lib/utils/token');
 
 describe('User model', () => {
-  // beforeAll(() => {
-  //   return mongoose.connect('mongodb://localhost27017/auth', {
-  //     useCreateIndex: true,
-  //     useFindAndModify: false,
-  //     useNewUrlParser: true
-  //   });
-  // });
+  beforeAll(() => {
+    return mongoose.connect('mongodb://localhost:27017/authTest', {
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useNewUrlParser: true
+    });
+  });
 
-  // beforeEach(() => {
-  //   return mongoose.connection.dropDatabase();
-  // });
+  beforeEach(() => {
+    return mongoose.connection.dropDatabase();
+  });
 
-  // afterAll(() => {
-  //   return mongoose.connection.close();
-  // });
-
-  it('has an email', () => {
+  afterAll(() => {
+    return mongoose.connection.close();
+  });
+  
+  it('has email', () => {
     const user = new User({
       email: 'testing@test.com'
     });
@@ -64,19 +64,7 @@ describe('User model', () => {
     expect(user._tempPassword).toEqual('password0001');
   });
 
-  it('adds a username', () => {
-    const user = new User({
-      email: 'testing@test.com',
-      passwordHash: '1234'
-    });
-
-    expect(user.toJSON()).toEqual({
-      _id: expect.any(mongoose.Types.ObjectId),
-      email: 'testing@test.com'
-    });
-  });
-
-  it('can compare a good password', async() => {
+  it('can compare a good password', () => {
     return User.create({
       email: 'testing@test.com',
       password: 'password0001'
@@ -98,13 +86,13 @@ describe('User model', () => {
         const token = user.authToken();
         const payload = untokenize(token);
         expect(payload).toEqual({
-          _id: user._id.toString(),
-          email: 'testing@test.com'
+          email: 'testing@test.com',
+          _id: user._id.toString()
         });
       });
     });
 
-    it('can create an authToken withDB', () => {
+    it('can create an authToken with DB', () => {
       const user = new User({
         email: 'testing@test.com',
         passwordHash: 'randomHash'
