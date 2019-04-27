@@ -1,4 +1,4 @@
-const { hash } = require('../../lib/utils/hash');
+require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('../../lib/models/User');
 const { untokenize } = require('../../lib/utils/token');
