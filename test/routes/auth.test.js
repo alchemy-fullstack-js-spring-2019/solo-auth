@@ -28,8 +28,8 @@ describe('Auth routes', () => {
       .then(res => {
         expect(res.body).toEqual({
           user: {
-            email: 'test@test.com',
             _id: expect.any(String),
+            email: 'test@test.com'
           },
           token: expect.any(String)
         });
