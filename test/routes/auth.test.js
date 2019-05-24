@@ -1,38 +1,25 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
-const request = require('supertest');
-const app = require('../../lib/app');
-const connect = require('../../lib/utils/connect');
-const User = require('../../lib/models/User');
+const { tokenize } = require('../../lib/utils/token');
+const { ensureAuth } = require('../../lib/middleware/ensureAuth');
 
-describe('Auth routes', () => {
-  beforeAll(() => {
-    return connect();
-  });
+describe('ensureAuth middleware', () => {
+  it('validates a good token', done => {
+    const token = tokenize({
+      email: 'testing@test.com'
+    });
 
-  beforeEach(() => {
-    mongoose.connection.dropDatabase();
-  });
+    const req = {
+      token
+    };
 
-  afterAll(() => {
-    return mongoose.connection.close();
-  });
-
-  it('signs up a new user', () => {
-    return request(app)
-      .post('/api/v1/auth/signup')
-      .send({
-        email: 'test@test.com',
-        password: 'iamapassword'
-      })
-      .then(res => {
-        expect(res.body).toEqual({
-          user: {
-            _id: expect.any(String),
-            email: 'test@test.com'
-          },
-          token: expect.any(String)
-        });
+    const res = {};
+    const next = () => {
+      expect(req.user).toEqual({
+        email: 'testing@test.com'
       });
+      done();
+    };
+
+    ensureAuth(req, res, next);
   });
 });
